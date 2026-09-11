@@ -1056,7 +1056,8 @@ const STORE_KEY = "keaBirthdayProgress";
 const LONGPRESS_MS = 3000;
 
 /* behaviour */
-const UNLOCK_MINUTES = 45;
+const PLAY_BEFORE = 120;    // minutes before arrival that the games open
+const REVEAL_BEFORE = 30;   // minutes before arrival the place is allowed to show
 
 /* Per-stop themed crossword (added on top of the base games). */
 const CROSSWORD_AT = { 0: "crossLA", 3: "crossCoffee", 7: "crossMatcha" };
@@ -1096,12 +1097,14 @@ function loadState() {
   try { raw = localStorage.getItem(STORE_KEY); } catch (e) { raw = memoryFallback; }
   let st = null;
   try { st = JSON.parse(raw); } catch (e) { st = null; }
-  const fresh = () => ({ day: todayKey(), progress: STOPS.map((_, i) => Array(gamesFor(i).length).fill(false)) });
+  const fresh = () => ({ day: todayKey(), progress: STOPS.map((_, i) => Array(gamesFor(i).length).fill(false)), forced: STOPS.map(() => false) });
   const shapeOk = st && st.day === todayKey() && Array.isArray(st.progress)
     && st.progress.length === STOPS.length
     && st.progress.every((row, i) => Array.isArray(row) && row.length === gamesFor(i).length);
   if (!shapeOk) return fresh();
   st.progress = st.progress.map((row) => row.map((v) => !!v));
+  if (!Array.isArray(st.forced) || st.forced.length !== STOPS.length) st.forced = STOPS.map(() => false);
+  else st.forced = st.forced.map((v) => !!v);
   return st;
 }
 function persist(st) {
@@ -1114,17 +1117,24 @@ let modal = null;      // { stop, game }
 let cleanup = null;    // active game teardown
 
 /* ── timing ── */
-function unlockAt(stop) {
+function minsBeforeArrival(stop, mins) {
   const d = new Date();
   d.setHours(0, 0, 0, 0);
-  d.setMinutes(stop.min - UNLOCK_MINUTES, 0, 0);
+  d.setMinutes(stop.min - mins, 0, 0);
   return d.getTime();
 }
+function playAt(stop) { return minsBeforeArrival(stop, PLAY_BEFORE); }
+function revealAt(stop) { return minsBeforeArrival(stop, REVEAL_BEFORE); }
+function cleared(i) { return state.forced[i] || state.progress[i].every(Boolean); }
+/* States: locked (too early to play) → playable (games open) →
+   pending (games beaten, place hidden until 30 min out) → solved (revealed).
+   A forced (long-press) reveal skips straight to solved. */
 function stopState(i) {
-  if (state.progress[i].every(Boolean)) return "solved";
-  return Date.now() >= unlockAt(STOPS[i]) ? "playable" : "locked";
+  if (state.forced[i]) return "solved";
+  if (cleared(i)) return Date.now() >= revealAt(STOPS[i]) ? "solved" : "pending";
+  return Date.now() >= playAt(STOPS[i]) ? "playable" : "locked";
 }
-function doneCount() { return state.progress.filter((r) => r.every(Boolean)).length; }
+function doneCount() { return STOPS.filter((_, i) => cleared(i)).length; }
 function donePct() { return (doneCount() / STOPS.length) * 100; }
 
 /* ── DOM refs ── */
@@ -1157,6 +1167,8 @@ const api = {
 function statusDot(st) {
   if (st === "solved")
     return '<span style="margin-top:8px;width:26px;height:26px;border-radius:999px;background:var(--color-accent-2-500);display:grid;place-items:center">' + SVG.checkDot + '</span>';
+  if (st === "pending")
+    return '<span style="margin-top:8px;width:26px;height:26px;border-radius:999px;background:var(--color-accent-2-500);display:grid;place-items:center">' + SVG.checkDot + '</span>';
   if (st === "playable")
     return '<span style="margin-top:8px;width:26px;height:26px;border-radius:999px;background:var(--color-accent);box-shadow:0 0 0 5px var(--color-accent-200)"></span>';
   return '<span style="margin-top:8px;width:26px;height:26px;border-radius:999px;background:var(--color-bg);border:2px solid var(--color-neutral-300)"></span>';
@@ -1181,6 +1193,14 @@ function rowHTML(i, st) {
             '<div style="font-size:13px;color:var(--color-accent-2-800);margin-top:4px">Revealed. See you there.</div>' +
           '</div>' +
         '</div>' +
+      '</div>';
+  } else if (st === "pending") {
+    content =
+      '<div class="card" style="background:var(--color-accent-2-100);border-radius:var(--radius-lg);padding:18px 20px">' +
+        '<div style="display:flex;align-items:center;gap:9px">' + SVG.checkTag +
+          '<span style="font-family:var(--font-heading);font-size:17px;color:var(--color-accent-2-900)">Cleared — nice work!</span>' +
+        '</div>' +
+        '<div style="margin-top:6px;font-size:13px;color:var(--color-accent-2-800)">This spot reveals in <span data-countdown-reveal style="font-variant-numeric:tabular-nums;font-weight:700">' + fmtCountdown(revealAt(stop) - Date.now()) + '</span></div>' +
       '</div>';
   } else if (st === "playable") {
     const headline = cleared === 0 ? "Ready when you are" : cleared + " of " + n + " games cleared";
@@ -1219,7 +1239,7 @@ function rowHTML(i, st) {
           '<span data-hold style="display:grid;place-items:center;cursor:pointer">' + SVG.lockClosed + '</span>' +
           '<span style="font-size:14px;color:var(--color-neutral-600)">Still a secret</span>' +
         '</div>' +
-        '<div style="margin-top:6px;font-size:13px;color:var(--color-neutral-700)">Opens in <span data-countdown style="font-variant-numeric:tabular-nums;font-weight:700;color:var(--color-accent-700)">' + fmtCountdown(unlockAt(stop) - Date.now()) + '</span></div>' +
+        '<div style="margin-top:6px;font-size:13px;color:var(--color-neutral-700)">Opens in <span data-countdown style="font-variant-numeric:tabular-nums;font-weight:700;color:var(--color-accent-700)">' + fmtCountdown(playAt(stop) - Date.now()) + '</span></div>' +
       '</div>';
   }
 
@@ -1251,13 +1271,23 @@ function renderRow(i, force) {
   if (!force && st === r.lastState) {
     if (st === "locked") {
       const cd = r.root.querySelector("[data-countdown]");
-      if (cd) cd.textContent = fmtCountdown(unlockAt(STOPS[i]) - Date.now());
+      if (cd) cd.textContent = fmtCountdown(playAt(STOPS[i]) - Date.now());
+    } else if (st === "pending") {
+      const cd = r.root.querySelector("[data-countdown-reveal]");
+      if (cd) cd.textContent = fmtCountdown(revealAt(STOPS[i]) - Date.now());
     }
     return;
   }
+  const prev = r.lastState;
   r.lastState = st;
   r.root.innerHTML = rowHTML(i, st);
   wireRow(i);
+  // celebrate the moment a cleared stop finally reveals
+  if (st === "solved" && prev === "pending") {
+    confettiBurst();
+    showToast(STOPS[i].place + " — revealed!");
+    r.root.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
 }
 
 function buildList() {
@@ -1275,10 +1305,10 @@ function buildList() {
 function updateProgress() {
   const done = doneCount();
   progFill.style.width = donePct() + "%";
-  progTitle.textContent = done === 0 ? "Nothing revealed yet"
-    : done === STOPS.length ? "Every stop revealed"
-    : done + " of " + STOPS.length + " revealed";
-  progNote.textContent = done === STOPS.length ? "That's the whole day" : "Games open 45 minutes ahead";
+  progTitle.textContent = done === 0 ? "Nothing unlocked yet"
+    : done === STOPS.length ? "Every stop unlocked"
+    : done + " of " + STOPS.length + " unlocked";
+  progNote.textContent = done === STOPS.length ? "That's the whole day" : "Games open 2 hours ahead";
 }
 
 /* ── game modal ── */
@@ -1306,17 +1336,25 @@ function closeGame() {
 function markDone(i, gi) {
   state.progress[i][gi] = true;
   persist(state);
-  if (state.progress[i].every(Boolean)) { confettiBurst(); showToast("Unlocked — here's where we're going"); }
-  else { const left = state.progress[i].filter((v) => !v).length; showToast(left === 1 ? "One game left on this stop." : left + " games left on this stop."); }
+  if (state.progress[i].every(Boolean)) {
+    confettiBurst();
+    // reveal now only if we're already inside the 30-min window; otherwise it waits
+    if (stopState(i) === "solved") showToast("Unlocked — here's where we're going");
+    else showToast("All cleared! This spot reveals 30 minutes before we arrive.");
+  } else {
+    const leftN = state.progress[i].filter((v) => !v).length;
+    showToast(leftN === 1 ? "One game left on this stop." : leftN + " games left on this stop.");
+  }
   renderRow(i, true);
   updateProgress();
   if (stopState(i) === "solved") rows[i].root.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 function revealAll(i) {
+  state.forced[i] = true;                       // long-press bypass reveals immediately
   state.progress[i] = state.progress[i].map(() => true);
   persist(state);
   confettiBurst();
-  showToast("Unlocked");
+  showToast("Revealed");
   renderRow(i, true);
   updateProgress();
 }
