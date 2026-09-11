@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#f5ead8">
+<title>Happy Birthday, Cookie Monster</title>
+
+<!-- ═══ Organic design system (imported from Claude Design) ═══ -->
+<style>
+/* Organic — design-system tokens and component classes. */
+@import url('https://fonts.googleapis.com/css2?family=Caprasimo:wght@400&family=Figtree:wght@400;600;700&display=swap');
+
+:root {
+  --color-bg: #f5ead8;
+  --color-surface: #ebddc5;
+  --color-text: #201e1d;
+  --color-accent: #c67139;
+  --color-accent-2: #7a8a5e;
+  --color-divider: color-mix(in srgb, #201e1d 16%, transparent);
+
+  --color-neutral-100: #f9f4ed;
+  --color-neutral-200: #eee7db;
+  --color-neutral-300: #dcd3c4;
+  --color-neutral-400: #c0b6a5;
+  --color-neutral-500: #a19786;
+  --color-neutral-600: #82796a;
+  --color-neutral-700: #645c50;
+  --color-neutral-800: #474238;
+  --color-neutral-900: #2e2b25;
+
+  --color-accent-100: #fff2eb;
+  --color-accent-200: #ffe1d0;
+  --color-accent-300: #ffc6a5;
+  --color-accent-400: #f6a06b;
+  --color-accent-500: #d67f48;
+  --color-accent-600: #b2622d;
+  --color-accent-700: #8c491a;
+  --color-accent-800: #643312;
+  --color-accent-900: #402310;
+
+  --color-accent-2-100: #f0fae1;
+  --color-accent-2-200: #e1eecc;
+  --color-accent-2-300: #ccdbb2;
+  --color-accent-2-400: #aebf92;
+  --color-accent-2-500: #8fa073;
+  --color-accent-2-600: #728157;
+  --color-accent-2-700: #56633f;
+  --color-accent-2-800: #3d472b;
+  --color-accent-2-900: #272e1b;
+
+  --font-heading: "Caprasimo", system-ui, sans-serif;
+  --font-heading-weight: 400;
+  --font-body: "Figtree", system-ui, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 28px;
+
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #2e2b25 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #2e2b25 16%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #2e2b25 22%, transparent);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); }
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 400; }
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 8.8px;
+}
+p { margin: 0 0 13.2px; }
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
+
+/* — buttons — */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  cursor: pointer; text-decoration: none;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 14px; line-height: 1.2; color: var(--color-text);
+  background: transparent; border: 1px solid transparent;
+  padding: 8.8px 15.84px; border-radius: 999px;
+}
+.btn svg { display: block; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary { background: var(--color-accent); color: var(--color-bg); }
+.btn-primary:hover { background: var(--color-accent-600); }
+.btn-primary:active { background: var(--color-accent-700); }
+.btn-secondary { border-color: var(--color-divider); }
+.btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.btn-secondary:active { background: color-mix(in srgb, var(--color-text) 14%, transparent); }
+
+/* — cards — */
+.card {
+  display: flex; flex-direction: column; gap: 8.8px;
+  padding: 13.2px; background: var(--color-surface);
+  border-radius: calc(var(--radius-lg) * 1.15);
+}
+.elev-sm { box-shadow: var(--shadow-sm); }
+.elev-md { box-shadow: var(--shadow-md); }
+.elev-lg { box-shadow: var(--shadow-lg); }
+
+/* — tags — */
+.tag {
+  display: inline-flex; align-items: center; font-size: 11px;
+  letter-spacing: 0.02em; padding: 3px 10px; border-radius: 999px;
+}
+.tag-accent { background: var(--color-accent-100); color: var(--color-accent-800); }
+.tag-accent-2 { background: var(--color-accent-2-100); color: var(--color-accent-2-800); }
+.tag-neutral { background: var(--color-neutral-100); color: var(--color-neutral-800); }
+</style>
+
+<!-- ═══ page base + animations (from the design's inline head) ═══ -->
+<style>
+  html,body{ margin:0; padding:0; background:var(--color-bg); overscroll-behavior-y:contain; -webkit-font-smoothing:antialiased; }
+  *{ -webkit-tap-highlight-color:transparent; }
+  a{ color:var(--color-accent); } a:hover{ color:var(--color-accent-700); }
+  @keyframes sheetUp{ from{ transform:translateY(100%); } to{ transform:translateY(0); } }
+  @keyframes seedIn{ 0%{ transform:scale(.6); opacity:0; } 60%{ transform:scale(1.06); } 100%{ transform:scale(1); opacity:1; } }
+  @keyframes sway{ 0%,100%{ transform:rotate(-2.5deg); } 50%{ transform:rotate(2.5deg); } }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+<div style="min-height:100vh;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);padding:calc(env(safe-area-inset-top) + 20px) 18px calc(env(safe-area-inset-bottom) + 40px)">
+  <div style="max-width:460px;margin:0 auto">
+
+    <header style="padding:6px 2px 0">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#7a8a5e" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="animation:sway 4.2s ease-in-out infinite;transform-origin:12px 22px"><path d="M12 22V8"></path><path d="M12 12C12 8 9 5 5 5c0 4 3 7 7 7Z"></path><path d="M12 10c0-3.3 2.7-6 6-6 0 3.3-2.7 6-6 6Z"></path></svg>
+        <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);font-weight:700">One day, ten stops</span>
+      </div>
+      <h1 style="font-family:var(--font-heading);font-size:38px;line-height:1.05;letter-spacing:-.02em;margin:0 0 10px;max-width:8.5em">Happy birthday, Cookie Monster</h1>
+      <p style="margin:0;font-size:15px;line-height:1.6;color:var(--color-neutral-700);max-width:30em">I planned the whole day for you. Every stop stays quiet until forty-five minutes before we arrive — then beat its little game and the place shows itself.</p>
+
+      <div class="card" style="margin:22px 0 26px;padding:16px 18px;border-radius:var(--radius-lg)">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px">
+          <span id="progTitle" style="font-family:var(--font-heading);font-size:17px"></span>
+          <span id="progNote" style="font-size:12px;color:var(--color-neutral-700)"></span>
+        </div>
+        <div style="height:10px;border-radius:999px;background:var(--color-neutral-300);overflow:hidden">
+          <div id="progFill" style="height:100%;width:0%;border-radius:999px;background:var(--color-accent-2-500);transition:width .6s cubic-bezier(.2,.9,.3,1)"></div>
+        </div>
+      </div>
+    </header>
+
+    <h2 style="font-family:var(--font-heading);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--color-neutral-700);margin:0 0 14px 2px">Times of arrival</h2>
+
+    <div id="list" style="display:flex;flex-direction:column"></div>
+
+    <footer style="text-align:center;margin-top:26px">
+      <p style="margin:0 0 14px;font-size:13px;color:var(--color-neutral-600)">Made with love. Happy adventuring.</p>
+      <button id="testBtn" class="btn btn-secondary" style="font-family:var(--font-body);font-weight:600;font-size:12px;color:var(--color-neutral-700);padding:9px 16px;border-radius:999px">Testing: open every game now</button>
+    </footer>
+  </div>
+</div>
+
+<!-- game modal -->
+<div id="mask" style="position:fixed;inset:0;z-index:50;display:none;align-items:flex-end;justify-content:center;background:color-mix(in srgb, #2e2b25 42%, transparent);backdrop-filter:blur(3px)">
+  <div id="sheet" style="width:100%;max-width:480px;background:var(--color-bg);border-radius:var(--radius-lg) var(--radius-lg) 0 0;padding:18px 18px calc(env(safe-area-inset-bottom) + 18px);box-shadow:var(--shadow-lg);animation:sheetUp .32s cubic-bezier(.2,.9,.3,1);max-height:94vh;display:flex;flex-direction:column">
+    <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:10px">
+      <div style="flex:1;min-width:0">
+        <h2 id="gameTitle" style="margin:0;font-family:var(--font-heading);font-size:21px;line-height:1.15"></h2>
+        <p id="gameHow" style="margin:5px 0 0;font-size:12.5px;line-height:1.45;color:var(--color-neutral-700)"></p>
+      </div>
+      <button id="giveUp" class="btn btn-secondary" style="font-family:var(--font-body);font-weight:600;font-size:13px;color:var(--color-neutral-700);padding:8px 14px;border-radius:999px;white-space:nowrap">Give up</button>
+    </div>
+    <div style="display:flex;justify-content:space-between;gap:10px;margin:4px 2px 8px;font-size:13px;font-weight:600">
+      <span id="statLeft"></span>
+      <span id="statRight" style="color:var(--color-neutral-600);font-weight:400"></span>
+    </div>
+    <div style="height:10px;background:var(--color-neutral-300);border-radius:999px;overflow:hidden;margin:0 2px 12px">
+      <div id="meter" style="height:100%;width:0%;background:var(--color-accent);border-radius:999px;transition:width .12s linear"></div>
+    </div>
+    <div id="stage" style="position:relative;flex:1;min-height:56vh;border-radius:var(--radius-md);overflow:hidden;background:var(--color-neutral-100);border:1px solid var(--color-divider)"></div>
+    <div id="hint" style="text-align:center;font-size:12px;color:var(--color-neutral-600);margin-top:10px"></div>
+  </div>
+</div>
+
+<div id="toast" style="position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom) + 26px);background:var(--color-neutral-900);color:var(--color-bg);font-weight:600;font-size:13px;padding:12px 20px;border-radius:999px;z-index:90;pointer-events:none;max-width:86vw;text-align:center;display:none"></div>
+
+<canvas id="fx" style="position:fixed;inset:0;z-index:80;pointer-events:none"></canvas>
+
+<!-- ═══ mini-game logic (imported: games.js) ═══ -->
+<script>
+/* Birthday mini-games — logic lifted from the original page.
+   window.BirthdayGames[key] = { how(), start(host, api, onWin) -> cleanup }
+   api = { setStatus(l,r), setMeter(pct), setHint(t), toast(msg), confetti() } */
+(function () {
+  "use strict";
+
+  function el(tag, style, text) {
+    const n = document.createElement(tag);
+    if (style) n.setAttribute("style", style);
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function overlayNode(host, onRetry) {
+    const o = el("div", "position:absolute;inset:0;display:none;place-items:center;text-align:center;flex-direction:column;gap:14px;padding:24px;background:color-mix(in srgb,#f5ead8 88%,transparent);backdrop-filter:blur(3px);z-index:5");
+    const msg = el("div", "font-family:Caprasimo,system-ui,sans-serif;font-size:19px;line-height:1.3;color:#201e1d;max-width:300px");
+    const btn = el("button", "border:none;cursor:pointer;font-family:Caprasimo,system-ui,sans-serif;font-size:15px;color:#f5ead8;background:#c67139;padding:11px 22px;border-radius:999px", "Try again");
+    btn.addEventListener("click", onRetry);
+    o.appendChild(msg); o.appendChild(btn); host.appendChild(o);
+    return {
+      show(html) { msg.innerHTML = html; o.style.display = "grid"; },
+      hide() { o.style.display = "none"; }
+    };
+  }
+
+  /* ─────────────────────────── Word Master ─────────────────────────── */
+  const wordle = {
+    how() { return "Guess the hidden five-letter word in five tries. Green is the right spot, gold is the wrong spot. Run out and a fresh word takes its place."; },
+    start(host, api, onWin) {
+      const WORDS = ["SHEAR","GLOBE","CACHE","SORRY","CHURN","GRAND","CRYPT","CYNIC","DECRY","GROWN",
+        "DWARF","EPOXY","YOUNG","VEGAN","QUEEN","FLUKE","FROTH","FUDGE","GAWKY","GLYPH","GNOME","GRAFT",
+        "GUSTO","HAVOC","HUTCH","IVORY","JAZZY","JERKY","KAYAK","KHAKI","KNACK","KNEAD","KNOLL","LILAC",
+        "LYMPH","MAMBO","MOTTO","MUCKY","MUMMY","EXIST","NYMPH","OZONE","PIXEL","PLUMB","PROXY","PSALM",
+        "QUALM","QUELL","QUIRK","QUOTA","RHYME","SCOWL","SHRUG","SIEGE","SKULK","SMIRK","SNORT","SPASM",
+        "SQUAD","SWIRL","SYRUP","THYME","TRYST","ULCER","ALTER","VIGIL","VIXEN","VODKA","VOUCH","WACKY",
+        "WHARF","WHELP","WITCH","WOOZY","COACH","YACHT","YEARN","ZESTY"];
+      const ROWS = 5, LEN = 5;
+      const C = { correct: "#6aaa64", present: "#cbb35a", absent: "#8a8f92" };
+
+      function pick(prev) { let w; do { w = WORDS[(Math.random() * WORDS.length) | 0]; } while (WORDS.length > 1 && w === prev); return w; }
+      let answer = pick(null), row = 0, col = 0, guess = "", over = false;
+
+      const wrap = el("div", "position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:12px 8px 8px;gap:10px;overflow:auto");
+      const board = el("div", "display:grid;grid-template-columns:repeat(5,1fr);gap:6px;width:min(72vw,258px);margin-top:2px");
+      const tiles = [];
+      for (let i = 0; i < ROWS * LEN; i++) {
+        const t = el("div", "aspect-ratio:1;display:grid;place-items:center;border:2px solid #dcd3c4;border-radius:10px;font-weight:800;font-size:min(7vw,26px);text-transform:uppercase;color:#201e1d;background:#f9f4ed;transition:transform .12s");
+        board.appendChild(t); tiles.push(t);
+      }
+      const kb = el("div", "width:100%;max-width:360px;display:flex;flex-direction:column;gap:6px");
+      const keyEls = {};
+      function mkKey(label, code, wide) {
+        const b = el("button", "flex:" + (wide ? "1.6" : "1") + ";min-width:0;height:46px;border:none;border-radius:12px;background:#dcd3c4;color:#201e1d;font-family:Figtree,system-ui,sans-serif;font-weight:700;font-size:" + (wide ? "11px" : "15px") + ";text-transform:uppercase;cursor:pointer;display:grid;place-items:center", label);
+        b.addEventListener("click", () => handleKey(code));
+        return b;
+      }
+      ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"].forEach((r, ri) => {
+        const krow = el("div", "display:flex;justify-content:center;gap:5px");
+        if (ri === 2) krow.appendChild(mkKey("Enter", "ENTER", true));
+        for (const ch of r) { const e = mkKey(ch, ch, false); keyEls[ch] = e; krow.appendChild(e); }
+        if (ri === 2) krow.appendChild(mkKey("Delete", "BACK", true));
+        kb.appendChild(krow);
+      });
+      wrap.appendChild(board); wrap.appendChild(kb); host.appendChild(wrap);
+
+      function updateHUD() { api.setStatus("Guess " + (row + 1) + " of " + ROWS, "Five letters"); api.setMeter(((ROWS - row) / ROWS) * 100); }
+      function score(g, a) {
+        const res = Array(LEN).fill("absent"), pool = a.split("");
+        for (let i = 0; i < LEN; i++) if (g[i] === pool[i]) { res[i] = "correct"; pool[i] = null; }
+        for (let i = 0; i < LEN; i++) if (res[i] !== "correct") { const j = pool.indexOf(g[i]); if (j !== -1) { res[i] = "present"; pool[j] = null; } }
+        return res;
+      }
+      const rank = { absent: 1, present: 2, correct: 3 };
+      function upgradeKey(ch, st) {
+        const e = keyEls[ch]; if (!e) return;
+        const cur = rank[e.dataset.state] || 0;
+        if (rank[st] > cur) { e.dataset.state = st; e.style.background = C[st]; e.style.color = "#fff"; }
+      }
+      function paint(t, st) { t.style.background = C[st]; t.style.borderColor = C[st]; t.style.color = "#fff"; }
+      function addLetter(ch) {
+        if (over || row >= ROWS || guess.length >= LEN) return;
+        const t = tiles[row * LEN + col];
+        t.textContent = ch; t.style.borderColor = "#a19786"; t.style.transform = "scale(1.08)";
+        setTimeout(() => { t.style.transform = "scale(1)"; }, 120);
+        guess += ch; col++;
+      }
+      function backspace() {
+        if (over || col === 0) return;
+        col--; guess = guess.slice(0, -1);
+        const t = tiles[row * LEN + col]; t.textContent = ""; t.style.borderColor = "#dcd3c4";
+      }
+      function submit() {
+        if (over || row >= ROWS) return;
+        if (guess.length < LEN) { api.toast("Not enough letters"); return; }
+        const states = score(guess, answer);
+        for (let i = 0; i < LEN; i++) { paint(tiles[row * LEN + i], states[i]); upgradeKey(guess[i], states[i]); }
+        if (guess === answer) {
+          over = true; api.setStatus("Solved", answer); api.confetti();
+          setTimeout(onWin, 950); return;
+        }
+        row++; col = 0; guess = "";
+        if (row >= ROWS) { over = true; api.toast("It was " + answer + " — here's a new one"); setTimeout(resetBoard, 1500); }
+        else updateHUD();
+      }
+      function resetBoard() {
+        answer = pick(answer);
+        for (const t of tiles) { t.textContent = ""; t.style.background = "#f9f4ed"; t.style.borderColor = "#dcd3c4"; t.style.color = "#201e1d"; }
+        for (const k in keyEls) { const e = keyEls[k]; e.dataset.state = ""; e.style.background = "#dcd3c4"; e.style.color = "#201e1d"; }
+        row = 0; col = 0; guess = ""; over = false; updateHUD();
+      }
+      function handleKey(code) {
+        if (code === "ENTER") submit();
+        else if (code === "BACK") backspace();
+        else if (/^[A-Z]$/.test(code)) addLetter(code);
+      }
+      const keyfn = (e) => {
+        if (e.key === "Enter") handleKey("ENTER");
+        else if (e.key === "Backspace") handleKey("BACK");
+        else { const k = e.key.toUpperCase(); if (/^[A-Z]$/.test(k)) handleKey(k); }
+      };
+      window.addEventListener("keydown", keyfn);
+      updateHUD();
+      api.setHint("No second run at the same word — miss five times and it swaps.");
+      return () => window.removeEventListener("keydown", keyfn);
+    }
+  };
+
+  /* ─────────────────────────── Crowd Rush ─────────────────────────── */
+  const RUNNER_DURATION = 20, RUNNER_GOAL = 1500, RUNNER_TOL = 30;
+  const RUNNER_TEMPLATE = [
+    [["+", 6], ["*", 2]], [["*", 2], ["+", 10]], [["+", 20], ["/", 2]], [["*", 2], ["+", 25]],
+    [["+", 40], ["-", 30]], [["*", 2], ["/", 2]], [["+", 80], ["*", 2]], [["/", 2], ["+", 120]],
+    [["*", 2], ["-", 150]], [["+", 200], ["/", 2]], [["*", 2], ["+", 260]], [["/", 3], ["+", 320]],
+    [["+", 300], ["-", 300]], [["+", 220], ["-", 220]], [["+", 160], ["-", 160]], [["+", 120], ["-", 120]],
+    [["+", 90], ["-", 90]], [["+", 65], ["-", 65]], [["+", 45], ["-", 45]], [["+", 30], ["-", 30]],
+    [["+", 20], ["-", 20]], [["+", 12], ["-", 12]]
+  ];
+  const opStr = (op, val) => (op === "*" ? "×" : op === "/" ? "÷" : op === "-" ? "−" : "+") + val;
+  const isGood = (op) => op === "+" || op === "*";
+
+  function roundRect(ctx, x, y, w, h, r) {
+    r = Math.min(r, h / 2, w / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+  }
+
+  function start2D(host, api, onWin) {
+    const cv = document.createElement("canvas");
+    cv.style.cssText = "display:block;width:100%;height:100%;touch-action:none";
+    host.appendChild(cv);
+    const ctx = cv.getContext("2d");
+    let w = 0, h = 0;
+    function resize() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2.5);
+      w = host.clientWidth; h = host.clientHeight;
+      cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize(); window.addEventListener("resize", resize);
+
+    const goal = RUNNER_GOAL, TOL = RUNNER_TOL;
+    const START = 520, GAP = 340, GATEH = 66;
+    const scrollSpeed = (START + RUNNER_TEMPLATE.length * GAP + 300) / RUNNER_DURATION;
+    let gates, boss, crowd, scroll, playerX, targetX, nextGate, phase, flash, last, raf, alive = true;
+    const ov = overlayNode(host, reset);
+
+    function reset() {
+      gates = RUNNER_TEMPLATE.map((pair, i) => {
+        let l = pair[0], r = pair[1];
+        if (Math.random() < 0.5) { const t = l; l = r; r = t; }
+        return { dist: START + i * GAP, left: l, right: r, done: false };
+      });
+      boss = { dist: START + RUNNER_TEMPLATE.length * GAP + 300 };
+      crowd = 1; scroll = 0; playerX = w / 2; targetX = w / 2;
+      nextGate = 0; phase = "run"; flash = null; last = performance.now();
+      ov.hide(); updateHUD();
+    }
+    function apply(op, val) {
+      if (op === "+") crowd += val;
+      else if (op === "-") crowd = Math.max(0, crowd - val);
+      else if (op === "*") crowd = Math.floor(crowd * val);
+      else crowd = Math.max(1, Math.floor(crowd / val));
+    }
+    function updateHUD() {
+      const d = crowd - goal;
+      const s = Math.abs(d) <= TOL ? "in range" : (d > 0 ? d + " over" : (goal - crowd) + " to go");
+      api.setStatus("Crowd " + crowd + " · " + s, "Goal " + goal + " ±" + TOL);
+      api.setMeter(scroll / boss.dist * 100);
+    }
+    function drawGateHalf(x, sy, width, pair, done) {
+      ctx.globalAlpha = done ? 0.2 : 0.82;
+      ctx.fillStyle = isGood(pair[0]) ? "rgba(76,200,140,0.6)" : "rgba(232,92,112,0.6)";
+      roundRect(ctx, x, sy - GATEH, width, GATEH, 12); ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "#fff"; ctx.font = "800 27px -apple-system,sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText(opStr(pair[0], pair[1]), x + width / 2, sy - GATEH / 2);
+    }
+    function drawCrowd(cx, anchorY, count, color) {
+      const n = Math.min(count, 28), perRow = 6;
+      for (let i = 0; i < n; i++) {
+        const row = Math.floor(i / perRow), inRow = i % perRow;
+        const rowCount = Math.min(perRow, n - row * perRow);
+        const x = cx + (inRow - (rowCount - 1) / 2) * 15, y = anchorY - row * 13;
+        ctx.fillStyle = color;
+        ctx.beginPath(); ctx.arc(x, y, 5.5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillRect(x - 3.5, y + 4, 7, 9);
+      }
+      ctx.fillStyle = "#3a2f45"; ctx.font = "800 22px -apple-system,sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
+      ctx.fillText(String(count), cx, anchorY - Math.ceil(n / perRow) * 13 - 8);
+    }
+    function draw() {
+      const py = h - 80;
+      ctx.clearRect(0, 0, w, h);
+      ctx.fillStyle = "#eef7f0"; ctx.fillRect(0, 0, w, h);
+      ctx.fillStyle = "#e1f0e6";
+      const off = scroll % 70;
+      for (let y = -70 + off; y < h; y += 70) ctx.fillRect(0, y, w, 5);
+      ctx.strokeStyle = "#d5e8db"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(w / 2, 0); ctx.lineTo(w / 2, h); ctx.stroke();
+      for (const g of gates) {
+        const sy = py - g.dist + scroll;
+        if (sy < -GATEH || sy > h + GATEH) continue;
+        drawGateHalf(8, sy, w / 2 - 12, g.left, g.done);
+        drawGateHalf(w / 2 + 4, sy, w / 2 - 12, g.right, g.done);
+      }
+      const bsy = py - boss.dist + scroll;
+      if (bsy > -80 && bsy < h + 40) drawCrowd(w / 2, bsy, goal, "#d4a017");
+      drawCrowd(playerX, py, crowd, "#7a4fce");
+      if (flash && flash.t > 0) {
+        ctx.globalAlpha = Math.max(0, flash.t / 0.6);
+        ctx.fillStyle = flash.good ? "#2fae6a" : "#e0596f";
+        ctx.font = "800 30px -apple-system,sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillText(flash.txt, flash.x, py - 74);
+        ctx.globalAlpha = 1;
+      }
+    }
+    function loop(now) {
+      if (!alive) return;
+      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+      if (phase === "run") {
+        scroll += scrollSpeed * dt;
+        playerX += (targetX - playerX) * Math.min(1, dt * 14);
+        playerX = Math.max(24, Math.min(w - 24, playerX));
+        while (nextGate < gates.length && scroll >= gates[nextGate].dist) {
+          const g = gates[nextGate]; g.done = true;
+          const pick = playerX < w / 2 ? g.left : g.right;
+          apply(pick[0], pick[1]);
+          flash = { t: 0.6, txt: opStr(pick[0], pick[1]), good: isGood(pick[0]), x: playerX };
+          nextGate++;
+        }
+        if (scroll >= boss.dist) {
+          const off = crowd - goal;
+          phase = Math.abs(off) <= TOL ? "won" : "lost";
+          api.setMeter(100);
+          if (phase === "won") {
+            api.confetti();
+            ov.show("Right on the nose — you finished at <b>" + crowd + "</b>.");
+            setTimeout(() => { if (alive && phase === "won") onWin(); }, 1400);
+          } else if (off > 0) ov.show("Overshot. <b>" + crowd + "</b> is " + off + " past " + goal + " — take a red gate or two.");
+          else ov.show("A little short. <b>" + crowd + "</b> is " + (goal - crowd) + " under " + goal + ".");
+        }
+        if (flash && flash.t > 0) flash.t -= dt;
+        updateHUD();
+      }
+      draw();
+      raf = requestAnimationFrame(loop);
+    }
+    function setT(e) {
+      const rect = cv.getBoundingClientRect();
+      const cx = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+      targetX = cx - rect.left;
+    }
+    cv.addEventListener("pointerdown", setT);
+    cv.addEventListener("pointermove", (e) => { if (e.buttons || e.pointerType === "touch") setT(e); });
+    cv.addEventListener("touchmove", (e) => { e.preventDefault(); setT(e); }, { passive: false });
+    let kl = false, kr = false;
+    const kd = (e) => { if (e.key === "ArrowLeft") kl = true; if (e.key === "ArrowRight") kr = true; };
+    const ku = (e) => { if (e.key === "ArrowLeft") kl = false; if (e.key === "ArrowRight") kr = false; };
+    window.addEventListener("keydown", kd); window.addEventListener("keyup", ku);
+    const kloop = setInterval(() => { if (kl) targetX -= 22; if (kr) targetX += 22; }, 16);
+
+    reset();
+    api.setHint("Green grows the crowd, red trims it. Land within " + TOL + " of the goal.");
+    raf = requestAnimationFrame(loop);
+    return () => {
+      alive = false; cancelAnimationFrame(raf); clearInterval(kloop);
+      window.removeEventListener("keydown", kd); window.removeEventListener("keyup", ku);
+      window.removeEventListener("resize", resize);
+    };
+  }
+
+  function start3D(host, api, onWin) {
+    const goal = RUNNER_GOAL, TOL = RUNNER_TOL;
+    const START = 60, GAP = 26, MAXVIS = 36;
+    const template = RUNNER_TEMPLATE;
+    const TOTAL = START + template.length * GAP + 40;
+    const scrollSpeed = TOTAL / RUNNER_DURATION;
+    const W = () => host.clientWidth || 1, H = () => host.clientHeight || 1;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(W(), H());
+    const dom = renderer.domElement;
+    dom.style.cssText = "width:100%;height:100%;display:block;touch-action:none";
+    host.appendChild(dom);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xd6f0e0);
+    scene.fog = new THREE.Fog(0xd6f0e0, 42, 125);
+    const camera = new THREE.PerspectiveCamera(62, W() / H(), 0.1, 500);
+    camera.position.set(0, 6, 12); camera.lookAt(0, 1.4, -12);
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x88bb99, 1.05));
+    const sun = new THREE.DirectionalLight(0xffffff, 0.55); sun.position.set(6, 12, 8); scene.add(sun);
+
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(140, 460), new THREE.MeshBasicMaterial({ color: 0xbfe6c8 }));
+    ground.rotation.x = -Math.PI / 2; ground.position.set(0, -0.02, -180); scene.add(ground);
+
+    const roadCanvas = document.createElement("canvas"); roadCanvas.width = 128; roadCanvas.height = 256;
+    const rcx = roadCanvas.getContext("2d");
+    rcx.fillStyle = "#a9d8b6"; rcx.fillRect(0, 0, 128, 256);
+    rcx.fillStyle = "#ffffff"; rcx.fillRect(5, 0, 5, 256); rcx.fillRect(118, 0, 5, 256);
+    for (let y = 0; y < 256; y += 42) rcx.fillRect(61, y, 6, 24);
+    const roadTex = new THREE.CanvasTexture(roadCanvas);
+    roadTex.wrapS = roadTex.wrapT = THREE.RepeatWrapping; roadTex.repeat.set(1, 34);
+    const road = new THREE.Mesh(new THREE.PlaneGeometry(11, 440), new THREE.MeshBasicMaterial({ map: roadTex }));
+    road.rotation.x = -Math.PI / 2; road.position.set(0, 0, -180); scene.add(road);
+
+    let scroll = 0, crowd = 1, phase = "run", bossResolved = false, targetX = 0, last = performance.now(), raf = 0, alive = true;
+
+    const gatePlane = new THREE.PlaneGeometry(4.4, 3.2);
+    const opCache = {};
+    function getOpMat(pair) {
+      const key = opStr(pair[0], pair[1]);
+      if (opCache[key]) return opCache[key];
+      const cv = document.createElement("canvas"); cv.width = 220; cv.height = 160;
+      const g = cv.getContext("2d");
+      g.fillStyle = isGood(pair[0]) ? "rgba(76,200,140,0.62)" : "rgba(232,92,112,0.62)"; g.fillRect(0, 0, 220, 160);
+      g.strokeStyle = "rgba(255,255,255,0.92)"; g.lineWidth = 8; g.strokeRect(4, 4, 212, 152);
+      g.fillStyle = "#ffffff"; g.font = "bold 92px -apple-system,Arial,sans-serif";
+      g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(key, 110, 84);
+      const mat = new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(cv), transparent: true, opacity: 0.85, side: THREE.DoubleSide, depthWrite: false });
+      opCache[key] = mat; return mat;
+    }
+    const gates = template.map((pair, i) => {
+      const group = new THREE.Group();
+      const leftMesh = new THREE.Mesh(gatePlane, getOpMat(pair[0])); leftMesh.position.set(-2.5, 1.7, 0);
+      const rightMesh = new THREE.Mesh(gatePlane, getOpMat(pair[1])); rightMesh.position.set(2.5, 1.7, 0);
+      group.add(leftMesh, rightMesh); scene.add(group);
+      return { group, leftMesh, rightMesh, baseZ: -(START + i * GAP), left: pair[0], right: pair[1], done: false };
+    });
+
+    const bodyGeo = new THREE.CylinderGeometry(0.16, 0.2, 0.55, 10);
+    const headGeo = new THREE.SphereGeometry(0.17, 10, 8);
+    const playerMat = new THREE.MeshLambertMaterial({ color: 0x7a4fce });
+    const bossMat = new THREE.MeshLambertMaterial({ color: 0xf1c40f });
+    function makePerson(mat) {
+      const grp = new THREE.Group();
+      const body = new THREE.Mesh(bodyGeo, mat); body.position.y = 0.33;
+      const head = new THREE.Mesh(headGeo, mat); head.position.y = 0.72;
+      grp.add(body, head); return grp;
+    }
+    function formation(i) { const row = Math.floor(i / 6), col = i % 6; return { x: (col - 2.5) * 0.5, z: 0.2 + row * 0.62 }; }
+
+    const crowdGroup = new THREE.Group(); scene.add(crowdGroup);
+    const playerRunners = [];
+    for (let i = 0; i < MAXVIS; i++) { const p = makePerson(playerMat); const f = formation(i); p.position.set(f.x, 0, f.z); crowdGroup.add(p); playerRunners.push(p); }
+    const bossGroup = new THREE.Group(); scene.add(bossGroup);
+    const bossBaseZ = -TOTAL;
+    for (let i = 0; i < Math.min(goal, MAXVIS); i++) { const p = makePerson(bossMat); const f = formation(i); p.position.set(f.x, 0, -f.z); bossGroup.add(p); }
+
+    function makeTextSprite() {
+      const cv = document.createElement("canvas"); cv.width = 256; cv.height = 128;
+      const x = cv.getContext("2d");
+      const tex = new THREE.CanvasTexture(cv);
+      const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false, depthWrite: false }));
+      spr.scale.set(3.2, 1.6, 1);
+      function set(main, sub, color) {
+        x.clearRect(0, 0, 256, 128);
+        x.textAlign = "center"; x.textBaseline = "middle"; x.lineWidth = 10; x.strokeStyle = "rgba(255,255,255,0.95)";
+        x.font = "bold 74px -apple-system,Arial,sans-serif";
+        x.strokeText(main, 128, sub ? 46 : 66); x.fillStyle = color || "#3a2f45"; x.fillText(main, 128, sub ? 46 : 66);
+        if (sub) {
+          x.font = "bold 38px -apple-system,Arial,sans-serif";
+          x.strokeText(sub, 128, 103); x.fillStyle = color || "#3a2f45"; x.fillText(sub, 128, 103);
+        }
+        tex.needsUpdate = true;
+      }
+      return { sprite: spr, set, tex };
+    }
+    const pCount = makeTextSprite(); pCount.sprite.position.set(0, 1.95, 0.5); crowdGroup.add(pCount.sprite);
+    const bCount = makeTextSprite(); bCount.sprite.position.set(0, 1.95, 0.2); bossGroup.add(bCount.sprite);
+    bCount.set(String(goal), "GOAL ±" + TOL, "#7a5c00");
+
+    function apply(op, val) {
+      if (op === "+") crowd += val;
+      else if (op === "-") crowd = Math.max(0, crowd - val);
+      else if (op === "*") crowd = Math.floor(crowd * val);
+      else crowd = Math.max(1, Math.floor(crowd / val));
+    }
+    function goalDiff() {
+      const d = crowd - goal;
+      if (Math.abs(d) <= TOL) return { t: "IN RANGE", c: "#1f9d57" };
+      if (d > 0) return { t: d + " over", c: "#c0392b" };
+      return { t: (goal - crowd) + " to go", c: "#2563d6" };
+    }
+    function updateCrowdVisual() {
+      const vis = Math.min(crowd, MAXVIS);
+      for (let i = 0; i < playerRunners.length; i++) playerRunners[i].visible = i < vis;
+      const d = goalDiff(); pCount.set(String(crowd), d.t, d.c);
+    }
+    function updateHUD() {
+      const d = goalDiff();
+      api.setStatus("Crowd " + crowd + " · " + d.t.toLowerCase(), "Goal " + goal + " ±" + TOL);
+      api.setMeter(scroll / TOTAL * 100);
+    }
+    const ov = overlayNode(host, reset);
+
+    function reset() {
+      scroll = 0; crowd = 1; phase = "run"; bossResolved = false;
+      crowdGroup.position.x = 0; targetX = 0; last = performance.now();
+      gates.forEach((g) => {
+        if (Math.random() < 0.5) { const t = g.left; g.left = g.right; g.right = t; }
+        g.leftMesh.material = getOpMat(g.left);
+        g.rightMesh.material = getOpMat(g.right);
+        g.done = false; g.group.position.z = g.baseZ; g.group.visible = true;
+      });
+      bossGroup.position.z = bossBaseZ;
+      ov.hide(); updateCrowdVisual(); updateHUD();
+    }
+    function setT(e) {
+      const rect = dom.getBoundingClientRect();
+      const clientX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+      targetX = ((clientX - rect.left) / rect.width - 0.5) * 6.4;
+    }
+    dom.addEventListener("pointerdown", setT);
+    dom.addEventListener("pointermove", (e) => { if (e.buttons || e.pointerType === "touch") setT(e); });
+    dom.addEventListener("touchmove", (e) => { e.preventDefault(); setT(e); }, { passive: false });
+    let kl = false, kr = false;
+    const kd = (e) => { if (e.key === "ArrowLeft") kl = true; if (e.key === "ArrowRight") kr = true; };
+    const ku = (e) => { if (e.key === "ArrowLeft") kl = false; if (e.key === "ArrowRight") kr = false; };
+    window.addEventListener("keydown", kd); window.addEventListener("keyup", ku);
+    const kloop = setInterval(() => { if (kl) targetX -= 0.35; if (kr) targetX += 0.35; }, 16);
+    function onResize() { renderer.setSize(W(), H()); camera.aspect = W() / H(); camera.updateProjectionMatrix(); }
+    window.addEventListener("resize", onResize);
+
+    function loop(now) {
+      if (!alive) return;
+      raf = requestAnimationFrame(loop);
+      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+      if (phase === "run") {
+        scroll += scrollSpeed * dt;
+        roadTex.offset.y = -scroll * 0.0135;
+        crowdGroup.position.x += (targetX - crowdGroup.position.x) * Math.min(1, dt * 10);
+        crowdGroup.position.x = Math.max(-3.2, Math.min(3.2, crowdGroup.position.x));
+        for (const g of gates) {
+          g.group.position.z = g.baseZ + scroll;
+          if (!g.done && g.group.position.z >= 0) {
+            g.done = true;
+            const pick = crowdGroup.position.x < 0 ? g.left : g.right;
+            apply(pick[0], pick[1]); updateCrowdVisual();
+          }
+          g.group.visible = g.group.position.z < 7.5;
+        }
+        bossGroup.position.z = bossBaseZ + scroll;
+        if (!bossResolved && bossGroup.position.z >= -0.5) {
+          bossResolved = true;
+          const off = crowd - goal;
+          phase = Math.abs(off) <= TOL ? "won" : "lost";
+          api.setMeter(100);
+          if (phase === "won") {
+            api.confetti();
+            ov.show("Right on the nose — you finished at <b>" + crowd + "</b>.");
+            setTimeout(() => { if (alive && phase === "won") onWin(); }, 1500);
+          } else if (off > 0) ov.show("Overshot. <b>" + crowd + "</b> is " + off + " past " + goal + " — take a red gate or two.");
+          else ov.show("A little short. <b>" + crowd + "</b> is " + (goal - crowd) + " under " + goal + ".");
+        }
+        camera.position.x += (crowdGroup.position.x * 0.42 - camera.position.x) * Math.min(1, dt * 4);
+        camera.lookAt(crowdGroup.position.x * 0.2, 1.4, -12);
+        const vis = Math.min(crowd, MAXVIS);
+        for (let i = 0; i < vis; i++) playerRunners[i].position.y = Math.abs(Math.sin(now * 0.008 + i * 0.6)) * 0.07;
+        updateHUD();
+      }
+      renderer.render(scene, camera);
+    }
+
+    reset();
+    api.setHint("Green grows the crowd, red trims it. Land within " + TOL + " of the goal.");
+    raf = requestAnimationFrame(loop);
+
+    return () => {
+      alive = false; cancelAnimationFrame(raf); clearInterval(kloop);
+      window.removeEventListener("keydown", kd); window.removeEventListener("keyup", ku);
+      window.removeEventListener("resize", onResize);
+      scene.traverse(o => { if (o.geometry && o.geometry.dispose) o.geometry.dispose(); });
+      Object.keys(opCache).forEach(k => { const m = opCache[k]; if (m.map) m.map.dispose(); m.dispose(); });
+      [playerMat, bossMat, road.material, ground.material].forEach(m => m.dispose());
+      roadTex.dispose();
+      pCount.tex.dispose(); pCount.sprite.material.dispose();
+      bCount.tex.dispose(); bCount.sprite.material.dispose();
+      renderer.dispose();
+      if (dom.parentNode) dom.parentNode.removeChild(dom);
+    };
+  }
+
+  const runner = {
+    how() { return "Your crowd runs on its own. Slide left or right through the gates — land within " + RUNNER_TOL + " of " + RUNNER_GOAL + " at the finish."; },
+    start(host, api, onWin) {
+      if (typeof THREE !== "undefined") {
+        try { return start3D(host, api, onWin); }
+        catch (err) { console.error("3D runner init failed; using 2D fallback.", err); host.innerHTML = ""; }
+      }
+      return start2D(host, api, onWin);
+    }
+  };
+
+  window.BirthdayGames = { wordle, runner };
+})();
+</script>
+
+<!-- ═══ app logic (ported from the DC component) ═══ -->
+<script>
+"use strict";
+/* Cookie Monster's Birthday Adventure — Organic redesign.
+   Each stop hides behind two games (Crowd Rush + Word Master); clear both
+   to reveal the place. Stops open 45 minutes before arrival. Progress is
+   day-scoped and resets at midnight. Long-press a lock 3s to bypass. */
+
+const STOPS = [
+  { time: "8:00 AM", min: 480, place: "West Hollywood" },
+  { time: "8:30 AM", min: 510, place: "Community Goods" },
+  { time: "9:30 AM", min: 570, place: "The Grove" },
+  { time: "10:00 AM", min: 600, place: "Hala Coffee" },
+  { time: "12:00 PM", min: 720, place: "Doomies" },
+  { time: "1:30 PM", min: 810, place: "DAMO" },
+  { time: "3:15 PM", min: 915, place: "Union Station" },
+  { time: "3:45 PM", min: 945, place: "STILE" },
+  { time: "4:30 PM", min: 990, place: "Roof Top Pool" },
+  { time: "9:00 PM", min: 1260, place: "RedWhite Boneless Ramen" }
+];
+const GAME_KEYS = ["runner", "wordle"];
+const GAME_NAMES = { runner: "Crowd Rush", wordle: "Word Master" };
+const STORE_KEY = "keaBirthdayProgress";
+const LONGPRESS_MS = 3000;
+
+/* behaviour props (mirrors the DC component defaults) */
+const UNLOCK_MINUTES = 45;
+const REQUIRE_BOTH = true;
+const SHOW_TESTER = true;
+const GAME_COUNT = REQUIRE_BOTH ? 2 : 1;
+
+/* ── SVG snippets (from the imported design) ── */
+const SVG = {
+  checkDot: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f5ead8" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>',
+  pin: '<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#56633f" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:3px"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>',
+  lockOpen: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c67139" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2.5"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>',
+  checkTag: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#56633f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>',
+  chevron: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#f5ead8" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>',
+  lockClosed: '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#a19786" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2.5"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>'
+};
+
+/* ── day-scoped state ── */
+function todayKey(d) { d = d || new Date(); return d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate(); }
+function fmtCountdown(ms) {
+  if (ms < 0) ms = 0;
+  const s = Math.floor(ms / 1000), h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = s % 60;
+  const pad = (n) => String(n).padStart(2, "0");
+  return (h > 0 ? h + ":" : "") + pad(m) + ":" + pad(ss);
+}
+
+let memoryFallback = null;
+function loadState() {
+  let raw = null;
+  try { raw = localStorage.getItem(STORE_KEY); } catch (e) { raw = memoryFallback; }
+  let st = null;
+  try { st = JSON.parse(raw); } catch (e) { st = null; }
+  const n = GAME_COUNT;
+  const fresh = () => ({ day: todayKey(), progress: STOPS.map(() => Array(n).fill(false)) });
+  if (!st || st.day !== todayKey() || !Array.isArray(st.progress) || st.progress.length !== STOPS.length) st = fresh();
+  st.progress = st.progress.map((row) => {
+    const out = Array(n).fill(false);
+    if (Array.isArray(row)) for (let i = 0; i < n; i++) out[i] = !!row[i];
+    return out;
+  });
+  return st;
+}
+function persist(st) {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(st)); }
+  catch (e) { memoryFallback = JSON.stringify(st); }
+}
+
+let state = loadState();
+let testAll = false;
+let modal = null;      // { stop, game }
+let cleanup = null;    // active game teardown
+
+/* ── timing ── */
+function unlockAt(stop) {
+  const d = new Date();
+  d.setHours(0, 0, 0, 0);
+  d.setMinutes(stop.min - UNLOCK_MINUTES, 0, 0);
+  return d.getTime();
+}
+function stopState(i) {
+  if (state.progress[i].every(Boolean)) return "solved";
+  if (testAll) return "playable";
+  return Date.now() >= unlockAt(STOPS[i]) ? "playable" : "locked";
+}
+function doneCount() { return state.progress.filter((r) => r.every(Boolean)).length; }
+function donePct() { return (doneCount() / STOPS.length) * 100; }
+
+/* ── DOM refs ── */
+const listEl = document.getElementById("list");
+const progTitle = document.getElementById("progTitle");
+const progNote = document.getElementById("progNote");
+const progFill = document.getElementById("progFill");
+const mask = document.getElementById("mask");
+const sheet = document.getElementById("sheet");
+const stageEl = document.getElementById("stage");
+const statLeft = document.getElementById("statLeft");
+const statRight = document.getElementById("statRight");
+const meterEl = document.getElementById("meter");
+const hintEl = document.getElementById("hint");
+const gameTitle = document.getElementById("gameTitle");
+const gameHow = document.getElementById("gameHow");
+const toastEl = document.getElementById("toast");
+const testBtn = document.getElementById("testBtn");
+const rows = []; // { root, lastState }
+
+/* ── HUD api given to games ── */
+const api = {
+  setStatus: (l, r) => { statLeft.textContent = l; statRight.textContent = r; },
+  setMeter: (p) => { meterEl.style.width = Math.max(0, Math.min(100, p)) + "%"; },
+  setHint: (t) => { hintEl.textContent = t; },
+  toast: (m) => showToast(m),
+  confetti: () => confettiBurst()
+};
+
+/* ── row rendering ── */
+function statusDot(st) {
+  if (st === "solved")
+    return '<span style="margin-top:8px;width:26px;height:26px;border-radius:999px;background:var(--color-accent-2-500);display:grid;place-items:center">' + SVG.checkDot + '</span>';
+  if (st === "playable")
+    return '<span style="margin-top:8px;width:26px;height:26px;border-radius:999px;background:var(--color-accent);box-shadow:0 0 0 5px var(--color-accent-200)"></span>';
+  return '<span style="margin-top:8px;width:26px;height:26px;border-radius:999px;background:var(--color-bg);border:2px solid var(--color-neutral-300)"></span>';
+}
+
+function rowHTML(i, st) {
+  const stop = STOPS[i];
+  const row = state.progress[i];
+  const cleared = row.filter(Boolean).length;
+  const n = GAME_COUNT;
+  const isLast = i === STOPS.length - 1;
+  const connector = isLast ? '' : '<span style="flex:1;width:0;border-left:2px dashed var(--color-neutral-300);margin-top:6px;min-height:26px"></span>';
+
+  let content = "";
+  if (st === "solved") {
+    content =
+      '<div class="card" style="background:var(--color-accent-2-200);border-radius:var(--radius-lg);padding:18px 20px;animation:seedIn .5s cubic-bezier(.2,1.4,.4,1)">' +
+        '<div style="display:flex;align-items:flex-start;gap:10px">' + SVG.pin +
+          '<div style="min-width:0">' +
+            '<div style="font-family:var(--font-heading);font-size:22px;line-height:1.15;color:var(--color-accent-2-900)">' + stop.place + '</div>' +
+            '<div style="font-size:13px;color:var(--color-accent-2-800);margin-top:4px">Revealed. See you there.</div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  } else if (st === "playable") {
+    const headline = cleared === 0 ? "Ready when you are" : cleared + " of " + n + " games cleared";
+    const subline = n === 1
+      ? "Win the game and the stop appears."
+      : (cleared === 0 ? "Two games stand between you and this one." : "One more game and it's yours.");
+    let gamesHTML = "";
+    for (let gi = 0; gi < n; gi++) {
+      const key = GAME_KEYS[gi];
+      if (row[gi]) {
+        gamesHTML +=
+          '<div class="tag tag-accent-2" style="gap:8px;padding:9px 14px;border-radius:999px;font-size:13px;font-weight:600">' +
+            SVG.checkTag + '<span>' + GAME_NAMES[key] + ' cleared</span>' +
+          '</div>';
+      } else {
+        gamesHTML +=
+          '<button class="btn btn-primary" data-play="' + gi + '" style="display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;font-size:15px;padding:12px 18px;border-radius:999px">' +
+            '<span>Play ' + GAME_NAMES[key] + '</span>' + SVG.chevron +
+          '</button>';
+      }
+    }
+    content =
+      '<div class="card elev-sm" style="border-radius:var(--radius-lg);padding:18px 20px">' +
+        '<div style="display:flex;align-items:center;gap:9px">' +
+          '<span data-hold style="display:grid;place-items:center;cursor:pointer">' + SVG.lockOpen + '</span>' +
+          '<span style="font-family:var(--font-heading);font-size:17px">' + headline + '</span>' +
+        '</div>' +
+        '<p style="margin:6px 0 0;font-size:13px;line-height:1.5;color:var(--color-neutral-700)">' + subline + '</p>' +
+        '<div style="display:flex;flex-direction:column;gap:8px;margin-top:14px">' + gamesHTML + '</div>' +
+      '</div>';
+  } else {
+    content =
+      '<div style="background:transparent;border:1.5px dashed var(--color-neutral-300);border-radius:var(--radius-lg);padding:16px 20px">' +
+        '<div style="display:flex;align-items:center;gap:9px">' +
+          '<span data-hold style="display:grid;place-items:center;cursor:pointer">' + SVG.lockClosed + '</span>' +
+          '<span style="font-size:14px;color:var(--color-neutral-600)">Still a secret</span>' +
+        '</div>' +
+        '<div style="margin-top:6px;font-size:13px;color:var(--color-neutral-700)">Opens in <span data-countdown style="font-variant-numeric:tabular-nums;font-weight:700;color:var(--color-accent-700)">' + fmtCountdown(unlockAt(stop) - Date.now()) + '</span></div>' +
+      '</div>';
+  }
+
+  return (
+    '<div style="display:flex;gap:14px;align-items:stretch">' +
+      '<div style="width:62px;flex:none;display:flex;flex-direction:column;align-items:center;padding-top:16px">' +
+        '<span style="font-family:var(--font-heading);font-size:14px;line-height:1.1;text-align:center;color:var(--color-neutral-800)">' + stop.time + '</span>' +
+        statusDot(st) + connector +
+      '</div>' +
+      '<div style="flex:1;min-width:0;padding-bottom:16px">' + content + '</div>' +
+    '</div>'
+  );
+}
+
+function wireRow(i) {
+  const r = rows[i];
+  const playBtns = r.root.querySelectorAll("[data-play]");
+  playBtns.forEach((btn) => {
+    const gi = parseInt(btn.dataset.play, 10);
+    btn.addEventListener("click", () => openGame(i, gi));
+  });
+  const hold = r.root.querySelector("[data-hold]");
+  if (hold) attachLongPress(hold, i);
+}
+
+function renderRow(i, force) {
+  const r = rows[i];
+  const st = stopState(i);
+  if (!force && st === r.lastState) {
+    if (st === "locked") {
+      const cd = r.root.querySelector("[data-countdown]");
+      if (cd) cd.textContent = fmtCountdown(unlockAt(STOPS[i]) - Date.now());
+    }
+    return;
+  }
+  r.lastState = st;
+  r.root.innerHTML = rowHTML(i, st);
+  wireRow(i);
+}
+
+function buildList() {
+  listEl.innerHTML = "";
+  rows.length = 0;
+  STOPS.forEach((_, i) => {
+    const root = document.createElement("div");
+    rows.push({ root, lastState: null });
+    listEl.appendChild(root);
+    renderRow(i, true);
+  });
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = doneCount();
+  progFill.style.width = donePct() + "%";
+  progTitle.textContent = done === 0 ? "Nothing revealed yet"
+    : done === STOPS.length ? "Every stop revealed"
+    : done + " of " + STOPS.length + " revealed";
+  progNote.textContent = done === STOPS.length ? "That's the whole day" : "Games open 45 minutes ahead";
+}
+
+/* ── game modal ── */
+function openGame(i, gi) {
+  modal = { stop: i, game: gi };
+  const key = GAME_KEYS[gi];
+  const builder = window.BirthdayGames && window.BirthdayGames[key];
+  gameTitle.textContent = GAME_NAMES[key];
+  gameHow.textContent = builder ? builder.how() : "";
+  statLeft.textContent = ""; statRight.textContent = ""; hintEl.textContent = "";
+  meterEl.style.width = "0%";
+  stageEl.innerHTML = "";
+  mask.style.display = "flex";
+  document.body.style.overflow = "hidden";
+  if (!builder) return;
+  cleanup = builder.start(stageEl, api, () => { closeGame(); markDone(i, gi); });
+}
+function closeGame() {
+  if (cleanup) { try { cleanup(); } catch (e) {} cleanup = null; }
+  stageEl.innerHTML = "";
+  mask.style.display = "none";
+  document.body.style.overflow = "";
+  modal = null;
+}
+function markDone(i, gi) {
+  state.progress[i][gi] = true;
+  persist(state);
+  if (state.progress[i].every(Boolean)) { confettiBurst(); showToast("Unlocked — here's where we're going"); }
+  else showToast("One down. One game left on this stop.");
+  renderRow(i, true);
+  updateProgress();
+  if (stopState(i) === "solved") rows[i].root.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+function revealAll(i) {
+  state.progress[i] = state.progress[i].map(() => true);
+  persist(state);
+  confettiBurst();
+  showToast("Unlocked");
+  renderRow(i, true);
+  updateProgress();
+}
+mask.addEventListener("click", (e) => { if (e.target === mask) closeGame(); });
+sheet.addEventListener("click", (e) => e.stopPropagation());
+document.getElementById("giveUp").addEventListener("click", closeGame);
+
+/* ── toast ── */
+let toastT = 0;
+function showToast(msg) {
+  toastEl.textContent = msg;
+  toastEl.style.display = "block";
+  clearTimeout(toastT);
+  toastT = setTimeout(() => { toastEl.style.display = "none"; }, 2400);
+}
+
+/* ── long-press bypass ── */
+function attachLongPress(elm, i) {
+  let timer = null;
+  const start = () => { clearTimeout(timer); timer = setTimeout(() => revealAll(i), LONGPRESS_MS); };
+  const end = () => clearTimeout(timer);
+  elm.addEventListener("pointerdown", start);
+  elm.addEventListener("pointerup", end);
+  elm.addEventListener("pointerleave", end);
+  elm.addEventListener("pointercancel", end);
+}
+
+/* ── confetti ── */
+const fx = document.getElementById("fx");
+function sizeFx() {
+  const d = Math.min(window.devicePixelRatio || 1, 2.5);
+  fx.width = innerWidth * d; fx.height = innerHeight * d;
+  fx.getContext("2d").setTransform(d, 0, 0, d, 0, 0);
+}
+sizeFx();
+window.addEventListener("resize", sizeFx);
+let bits = [], confRAF = 0;
+function confettiBurst() {
+  const colors = ["#c67139", "#7a8a5e", "#f6a06b", "#aebf92", "#ffc6a5", "#8c491a"];
+  for (let i = 0; i < 130; i++) {
+    bits.push({
+      x: innerWidth / 2 + (Math.random() - 0.5) * 120, y: innerHeight * 0.3,
+      vx: (Math.random() - 0.5) * 9, vy: Math.random() * -11 - 3, g: 0.32 + Math.random() * 0.12,
+      s: 6 + Math.random() * 7, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.4,
+      c: colors[(Math.random() * colors.length) | 0], life: 1
+    });
+  }
+  if (!confRAF) confRAF = requestAnimationFrame(confLoop);
+}
+function confLoop() {
+  const ctx = fx.getContext("2d");
+  ctx.clearRect(0, 0, innerWidth, innerHeight);
+  for (let i = bits.length - 1; i >= 0; i--) {
+    const p = bits[i];
+    p.vy += p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life -= 0.006;
+    if (p.y > innerHeight + 30 || p.life <= 0) { bits.splice(i, 1); continue; }
+    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.globalAlpha = Math.max(0, p.life);
+    ctx.fillStyle = p.c; ctx.beginPath(); ctx.ellipse(0, 0, p.s / 2, p.s * 0.32, 0, 0, 6.283); ctx.fill(); ctx.restore();
+  }
+  if (bits.length) confRAF = requestAnimationFrame(confLoop);
+  else { confRAF = 0; ctx.clearRect(0, 0, innerWidth, innerHeight); }
+}
+
+/* ── tester toggle ── */
+if (SHOW_TESTER) {
+  testBtn.addEventListener("click", () => {
+    testAll = !testAll;
+    testBtn.textContent = testAll ? "Back to real times" : "Testing: open every game now";
+    for (let i = 0; i < STOPS.length; i++) renderRow(i, true);
+    showToast(testAll ? "Every game open for testing" : "Back to real times");
+  });
+} else {
+  testBtn.style.display = "none";
+}
+
+/* ── tick: countdowns + midnight reset ── */
+setInterval(() => {
+  if (state.day !== todayKey()) {
+    state = loadState();
+    persist(state);
+    if (modal) closeGame();
+    buildList();
+    showToast("New day — the itinerary reset");
+    return;
+  }
+  for (let i = 0; i < STOPS.length; i++) renderRow(i, false);
+}, 1000);
+
+/* ── boot ── */
+buildList();
+</script>
+</body>
+</html>
