@@ -719,14 +719,14 @@ p { margin: 0 0 13.2px; }
     };
   }
   const runner = makeRunner();
-  const runnerHard = makeRunner({ tol: 12, duration: 14 });   // tighter target, faster run
+  const runnerHard = makeRunner({ tol: 9, duration: 14 });   // tighter target, faster run
 
   /* ─────────────────────────── Cookie Crush (match-3) ─────────────────────────── */
   const candy = {
     how() { return "Swap two touching treats to line up three or more. Reach 1200 points before your 10 moves run out — cascades stack up fast."; },
     start(host, api, onWin, opts) {
       opts = opts || {};
-      const COLS = 6, ROWS = 6, TYPES = opts.types || 5, GOAL = opts.goal || 1200, MOVES = opts.moves || 10;
+      const COLS = 6, ROWS = 6, TYPES = opts.types || 5, GOAL = opts.goal || 1200, MOVES = opts.moves || 6;
       const EMO = ["🍬", "🍭", "🍫", "🍪", "🧁", "🍩"];
       const BG = ["#ffd1e8", "#dcc9ff", "#efd3ab", "#ffe6ad", "#c2ebcf", "#bcdcff"];
       let grid = [], sel = null, moves = MOVES, score = 0, busy = false, won = false, dead = false, alive = true;
