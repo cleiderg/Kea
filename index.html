@@ -221,7 +221,7 @@ p { margin: 0 0 13.2px; }
   /* ─────────────────────────── Word Master ─────────────────────────── */
   const wordle = {
     how() { return "Guess the hidden five-letter word in five tries. Green is the right spot, gold is the wrong spot. Run out and a fresh word takes its place."; },
-    start(host, api, onWin) {
+    start(host, api, onWin, opts) {
       const WORDS = ["SHEAR","GLOBE","CACHE","SORRY","CHURN","GRAND","CRYPT","CYNIC","DECRY","GROWN",
         "DWARF","EPOXY","YOUNG","VEGAN","QUEEN","FLUKE","FROTH","FUDGE","GAWKY","GLYPH","GNOME","GRAFT",
         "GUSTO","HAVOC","HUTCH","IVORY","JAZZY","JERKY","KAYAK","KHAKI","KNACK","KNEAD","KNOLL","LILAC",
@@ -229,7 +229,8 @@ p { margin: 0 0 13.2px; }
         "QUALM","QUELL","QUIRK","QUOTA","RHYME","SCOWL","SHRUG","SIEGE","SKULK","SMIRK","SNORT","SPASM",
         "SQUAD","SWIRL","SYRUP","THYME","TRYST","ULCER","ALTER","VIGIL","VIXEN","VODKA","VOUCH","WACKY",
         "WHARF","WHELP","WITCH","WOOZY","COACH","YACHT","YEARN","ZESTY"];
-      const ROWS = 5, LEN = 5;
+      opts = opts || {};
+      const ROWS = opts.rows || 5, LEN = 5;
       const C = { correct: "#6aaa64", present: "#cbb35a", absent: "#8a8f92" };
 
       function pick(prev) { let w; do { w = WORDS[(Math.random() * WORDS.length) | 0]; } while (WORDS.length > 1 && w === prev); return w; }
@@ -340,7 +341,8 @@ p { margin: 0 0 13.2px; }
     ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
   }
 
-  function start2D(host, api, onWin) {
+  function start2D(host, api, onWin, opts) {
+    opts = opts || {};
     const cv = document.createElement("canvas");
     cv.style.cssText = "display:block;width:100%;height:100%;touch-action:none";
     host.appendChild(cv);
@@ -354,9 +356,10 @@ p { margin: 0 0 13.2px; }
     }
     resize(); window.addEventListener("resize", resize);
 
-    const goal = RUNNER_GOAL, TOL = RUNNER_TOL;
+    const goal = opts.goal || RUNNER_GOAL, TOL = opts.tol || RUNNER_TOL;
+    const DUR = opts.duration || RUNNER_DURATION;
     const START = 520, GAP = 340, GATEH = 66;
-    const scrollSpeed = (START + RUNNER_TEMPLATE.length * GAP + 300) / RUNNER_DURATION;
+    const scrollSpeed = (START + RUNNER_TEMPLATE.length * GAP + 300) / DUR;
     let gates, boss, crowd, scroll, playerX, targetX, nextGate, phase, flash, last, raf, alive = true;
     const ov = overlayNode(host, reset);
 
@@ -487,12 +490,13 @@ p { margin: 0 0 13.2px; }
     };
   }
 
-  function start3D(host, api, onWin) {
-    const goal = RUNNER_GOAL, TOL = RUNNER_TOL;
+  function start3D(host, api, onWin, opts) {
+    opts = opts || {};
+    const goal = opts.goal || RUNNER_GOAL, TOL = opts.tol || RUNNER_TOL;
     const START = 60, GAP = 26, MAXVIS = 36;
     const template = RUNNER_TEMPLATE;
     const TOTAL = START + template.length * GAP + 40;
-    const scrollSpeed = TOTAL / RUNNER_DURATION;
+    const scrollSpeed = TOTAL / (opts.duration || RUNNER_DURATION);
     const W = () => host.clientWidth || 1, H = () => host.clientHeight || 1;
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -700,24 +704,31 @@ p { margin: 0 0 13.2px; }
     };
   }
 
-  const runner = {
-    how() { return "Your crowd runs on its own. Slide left or right through the gates — land within " + RUNNER_TOL + " of " + RUNNER_GOAL + " at the finish."; },
-    start(host, api, onWin) {
-      if (typeof THREE !== "undefined") {
-        try { return start3D(host, api, onWin); }
-        catch (err) { console.error("3D runner init failed; using 2D fallback.", err); host.innerHTML = ""; }
+  function makeRunner(opts) {
+    opts = opts || {};
+    const tol = opts.tol || RUNNER_TOL, goal = opts.goal || RUNNER_GOAL;
+    return {
+      how() { return "Your crowd runs on its own. Slide left or right through the gates — land within " + tol + " of " + goal + " at the finish."; },
+      start(host, api, onWin) {
+        if (typeof THREE !== "undefined") {
+          try { return start3D(host, api, onWin, opts); }
+          catch (err) { console.error("3D runner init failed; using 2D fallback.", err); host.innerHTML = ""; }
+        }
+        return start2D(host, api, onWin, opts);
       }
-      return start2D(host, api, onWin);
-    }
-  };
+    };
+  }
+  const runner = makeRunner();
+  const runnerHard = makeRunner({ tol: 12, duration: 14 });   // tighter target, faster run
 
   /* ─────────────────────────── Cookie Crush (match-3) ─────────────────────────── */
   const candy = {
     how() { return "Swap two touching treats to line up three or more. Reach 1200 points before your 10 moves run out — cascades stack up fast."; },
-    start(host, api, onWin) {
-      const COLS = 6, ROWS = 6, TYPES = 5, GOAL = 1200, MOVES = 10;
-      const EMO = ["🍬", "🍭", "🍫", "🍪", "🧁"];
-      const BG = ["#ffd1e8", "#dcc9ff", "#efd3ab", "#ffe6ad", "#c2ebcf"];
+    start(host, api, onWin, opts) {
+      opts = opts || {};
+      const COLS = 6, ROWS = 6, TYPES = opts.types || 5, GOAL = opts.goal || 1200, MOVES = opts.moves || 10;
+      const EMO = ["🍬", "🍭", "🍫", "🍪", "🧁", "🍩"];
+      const BG = ["#ffd1e8", "#dcc9ff", "#efd3ab", "#ffe6ad", "#c2ebcf", "#bcdcff"];
       let grid = [], sel = null, moves = MOVES, score = 0, busy = false, won = false, dead = false, alive = true;
 
       const wrap = el("div", "position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:10px");
@@ -829,16 +840,16 @@ p { margin: 0 0 13.2px; }
   /* ─────────────────────────── Crossword (LA / Matcha / Coffee) ─────────────────────────── */
   const CROSSWORDS = {
     losangeles: { rows: 9, cols: 13, entries: [
-      { answer: "SMOG", clue: "Basin haze trapped by the inversion layer", row: 1, col: 5, dir: "across" },
-      { answer: "HOLLYWOOD", clue: "Sign-topped district; 'Tinseltown'", row: 0, col: 7, dir: "down" },
-      { answer: "SUNSET", clue: "Strip or boulevard ending at the Pacific", row: 1, col: 5, dir: "down" },
-      { answer: "VENICE", clue: "Abbot Kinney's canal-laced beach town", row: 5, col: 0, dir: "across" },
-      { answer: "LAKERS", clue: "Purple-and-gold hoops five", row: 3, col: 7, dir: "across" },
-      { answer: "DODGERS", clue: "Chavez Ravine's blue nine", row: 7, col: 6, dir: "across" },
-      { answer: "MALIBU", clue: "Surfrider's 21-mile coast, 'the Bu'", row: 2, col: 0, dir: "across" },
-      { answer: "GETTY", clue: "Travertine hilltop museum above the 405", row: 4, col: 1, dir: "down" },
-      { answer: "GRIFFITH", clue: "Observatory and park named for a mining magnate", row: 0, col: 3, dir: "down" },
-      { answer: "RODEO", clue: "Beverly Hills drive said 'ro-DAY-oh'", row: 0, col: 10, dir: "down" }
+      { answer: "SMOG", clue: "Hazy air pollution LA is famous for", row: 1, col: 5, dir: "across" },
+      { answer: "HOLLYWOOD", clue: "Famous hillside sign and movie district", row: 0, col: 7, dir: "down" },
+      { answer: "SUNSET", clue: "___ Boulevard, or what happens at dusk", row: 1, col: 5, dir: "down" },
+      { answer: "VENICE", clue: "LA beach with a lively boardwalk and canals", row: 5, col: 0, dir: "across" },
+      { answer: "LAKERS", clue: "LA's purple-and-gold basketball team", row: 3, col: 7, dir: "across" },
+      { answer: "DODGERS", clue: "LA's Major League Baseball team", row: 7, col: 6, dir: "across" },
+      { answer: "MALIBU", clue: "Star-studded LA beach city", row: 2, col: 0, dir: "across" },
+      { answer: "GETTY", clue: "Famous LA art museum up on a hill", row: 4, col: 1, dir: "down" },
+      { answer: "GRIFFITH", clue: "___ Observatory, overlooking the city", row: 0, col: 3, dir: "down" },
+      { answer: "RODEO", clue: "___ Drive, the Beverly Hills shopping street", row: 0, col: 10, dir: "down" }
     ] },
     matcha: { rows: 12, cols: 8, entries: [
       { answer: "UMAMI", clue: "Savory depth strongest in gyokuro", row: 7, col: 3, dir: "across" },
@@ -1024,7 +1035,16 @@ p { margin: 0 0 13.2px; }
   const crossMatcha = makeCrossword("matcha", CROSSWORDS.matcha);
   const crossCoffee = makeCrossword("coffee", CROSSWORDS.coffee);
 
-  window.BirthdayGames = { wordle, runner, candy, crossLA, crossMatcha, crossCoffee };
+  const wordleHard = {
+    how() { return "Guess the hidden five-letter word in four tries. Green is the right spot, gold is the wrong spot. Miss and a fresh word appears."; },
+    start(host, api, onWin) { return wordle.start(host, api, onWin, { rows: 4 }); }
+  };
+  const candyHard = {
+    how() { return "Swap treats to reach 1500 points with six kinds of treat and only eight moves."; },
+    start(host, api, onWin) { return candy.start(host, api, onWin, { types: 6, goal: 1500, moves: 8 }); }
+  };
+
+  window.BirthdayGames = { wordle, runner, candy, crossLA, crossMatcha, crossCoffee, runnerHard, wordleHard, candyHard };
 })();
 </script>
 
@@ -1049,7 +1069,7 @@ const STOPS = [
   { time: "9:00 PM", min: 1260, place: "RedWhite Boneless Ramen" }
 ];
 const GAME_NAMES = {
-  runner: "Crowd Rush", wordle: "Word Master", candy: "Cookie Crush",
+  runner: "Crowd Rush", runnerHard: "Crowd Rush", wordle: "Word Master", wordleHard: "Word Master", candy: "Cookie Crush", candyHard: "Cookie Crush",
   crossLA: "LA Crossword", crossCoffee: "Coffee Crossword", crossMatcha: "Matcha Crossword"
 };
 const STORE_KEY = "keaBirthdayProgress";
@@ -1060,12 +1080,13 @@ const PLAY_BEFORE = 120;    // minutes before arrival that the games open
 const REVEAL_BEFORE = 30;   // minutes before arrival the place is allowed to show
 
 /* Per-stop themed crossword (added on top of the base games). */
-const CROSSWORD_AT = { 0: "crossLA", 3: "crossCoffee", 7: "crossMatcha" };
+const CROSSWORD_AT = { 1: "crossLA", 3: "crossCoffee", 5: "crossMatcha" };
 
 /* Odd-numbered stops (1st, 3rd, 5th, 7th, 9th) get Crowd Rush + Word Master;
    even-numbered stops get Word Master + Cookie Crush. A few stops also carry
    a themed crossword on top. */
 function gamesFor(i) {
+  if (i === STOPS.length - 1) return ["runnerHard", "wordleHard", "candyHard"];
   const odd = (i + 1) % 2 === 1;
   const g = odd ? ["runner", "wordle"] : ["wordle", "candy"];
   if (CROSSWORD_AT[i]) g.push(CROSSWORD_AT[i]);
