@@ -141,8 +141,8 @@ p { margin: 0 0 13.2px; }
         <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#7a8a5e" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="animation:sway 4.2s ease-in-out infinite;transform-origin:12px 22px"><path d="M12 22V8"></path><path d="M12 12C12 8 9 5 5 5c0 4 3 7 7 7Z"></path><path d="M12 10c0-3.3 2.7-6 6-6 0 3.3-2.7 6-6 6Z"></path></svg>
         <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);font-weight:700">One day, ten stops</span>
       </div>
-      <h1 style="font-family:var(--font-heading);font-size:38px;line-height:1.05;letter-spacing:-.02em;margin:0 0 10px;max-width:8.5em">Happy birthday, Cookie Monster</h1>
-      <p style="margin:0;font-size:15px;line-height:1.6;color:var(--color-neutral-700);max-width:30em">I planned the whole day for you. Every stop stays quiet until forty-five minutes before we arrive — then beat its little game and the place shows itself.</p>
+      <h1 style="font-family:var(--font-heading);font-size:38px;line-height:1.05;letter-spacing:-.02em;margin:0 0 10px;max-width:8.5em">Happy birthday   :) <3  :) <3 :) <3 :)</3></h1>
+      <p style="margin:0;font-size:15px;line-height:1.6;color:var(--color-neutral-700);max-width:30em">The following is our itinerary for the day. But before you can get your grubby little hands on what we have next you must complete a set of challenges. Are you up for the task? I'm warning you these are extremely difficult and will most likely be emotionally draining. But hey I'm just along for the ride so fuck it... xoxo gossip girl. oh and ps. you look good where did you get that shirt girl. yes slay cunt queen latifa beauty</p>
 
       <div class="card" style="margin:22px 0 26px;padding:16px 18px;border-radius:var(--radius-lg)">
         <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px">
@@ -160,8 +160,7 @@ p { margin: 0 0 13.2px; }
     <div id="list" style="display:flex;flex-direction:column"></div>
 
     <footer style="text-align:center;margin-top:26px">
-      <p style="margin:0 0 14px;font-size:13px;color:var(--color-neutral-600)">Made with love. Happy adventuring.</p>
-      <button id="testBtn" class="btn btn-secondary" style="font-family:var(--font-body);font-weight:600;font-size:12px;color:var(--color-neutral-700);padding:9px 16px;border-radius:999px">Testing: open every game now</button>
+      <p style="margin:0;font-size:13px;color:var(--color-neutral-600)">Made with love. Happy adventuring.</p>
     </footer>
   </div>
 </div>
@@ -712,7 +711,320 @@ p { margin: 0 0 13.2px; }
     }
   };
 
-  window.BirthdayGames = { wordle, runner };
+  /* ─────────────────────────── Cookie Crush (match-3) ─────────────────────────── */
+  const candy = {
+    how() { return "Swap two touching treats to line up three or more. Reach 1200 points before your 10 moves run out — cascades stack up fast."; },
+    start(host, api, onWin) {
+      const COLS = 6, ROWS = 6, TYPES = 5, GOAL = 1200, MOVES = 10;
+      const EMO = ["🍬", "🍭", "🍫", "🍪", "🧁"];
+      const BG = ["#ffd1e8", "#dcc9ff", "#efd3ab", "#ffe6ad", "#c2ebcf"];
+      let grid = [], sel = null, moves = MOVES, score = 0, busy = false, won = false, dead = false, alive = true;
+
+      const wrap = el("div", "position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:10px");
+      const board = el("div", "display:grid;grid-template-columns:repeat(" + COLS + ",1fr);grid-template-rows:repeat(" + ROWS + ",1fr);gap:5px;width:min(90%,360px);aspect-ratio:1;touch-action:none;user-select:none;-webkit-user-select:none");
+      wrap.appendChild(board); host.appendChild(wrap);
+      const cells = [];
+      for (let i = 0; i < ROWS * COLS; i++) {
+        const c = el("button", "border:none;border-radius:12px;display:grid;place-items:center;font-size:min(7vw,30px);line-height:1;cursor:pointer;transition:transform .13s ease,opacity .13s ease");
+        const r = (i / COLS) | 0, cc = i % COLS;
+        c.addEventListener("pointerdown", (e) => { e.preventDefault(); onPick(r, cc); });
+        c.addEventListener("pointerenter", (e) => { if (e.buttons) onDrag(r, cc); });
+        board.appendChild(c); cells.push(c);
+      }
+      const ov = overlayNode(host, reset);
+
+      const idx = (r, c) => r * COLS + c;
+      const rnd = () => (Math.random() * TYPES) | 0;
+      function pickAllowed(r, c) {
+        const bad = new Set();
+        if (c >= 2 && grid[r][c - 1] != null && grid[r][c - 1] === grid[r][c - 2]) bad.add(grid[r][c - 1]);
+        if (r >= 2 && grid[r - 1][c] != null && grid[r - 1][c] === grid[r - 2][c]) bad.add(grid[r - 1][c]);
+        let t; do { t = rnd(); } while (bad.has(t)); return t;
+      }
+      function build() {
+        do {
+          grid = [];
+          for (let r = 0; r < ROWS; r++) { grid[r] = []; for (let c = 0; c < COLS; c++) grid[r][c] = pickAllowed(r, c); }
+        } while (!hasMove());
+      }
+      function findMatches() {
+        const m = new Set();
+        for (let r = 0; r < ROWS; r++) { let run = 1; for (let c = 1; c <= COLS; c++) { if (c < COLS && grid[r][c] != null && grid[r][c] === grid[r][c - 1]) run++; else { if (run >= 3) for (let k = c - run; k < c; k++) m.add(r + "," + k); run = 1; } } }
+        for (let c = 0; c < COLS; c++) { let run = 1; for (let r = 1; r <= ROWS; r++) { if (r < ROWS && grid[r][c] != null && grid[r][c] === grid[r - 1][c]) run++; else { if (run >= 3) for (let k = r - run; k < r; k++) m.add(k + "," + c); run = 1; } } }
+        return m;
+      }
+      function swapCells(a, b) { const t = grid[a.r][a.c]; grid[a.r][a.c] = grid[b.r][b.c]; grid[b.r][b.c] = t; }
+      function hasMove() {
+        for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+          if (c < COLS - 1) { swapCells({ r, c }, { r, c: c + 1 }); const ok = findMatches().size > 0; swapCells({ r, c }, { r, c: c + 1 }); if (ok) return true; }
+          if (r < ROWS - 1) { swapCells({ r, c }, { r: r + 1, c }); const ok = findMatches().size > 0; swapCells({ r, c }, { r: r + 1, c }); if (ok) return true; }
+        }
+        return false;
+      }
+      function gravity() {
+        for (let c = 0; c < COLS; c++) {
+          let w = ROWS - 1;
+          for (let r = ROWS - 1; r >= 0; r--) if (grid[r][c] != null) { grid[w][c] = grid[r][c]; if (w !== r) grid[r][c] = null; w--; }
+          for (let r = w; r >= 0; r--) grid[r][c] = null;
+        }
+      }
+      function refill() { for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) if (grid[r][c] == null) grid[r][c] = rnd(); }
+      function render() {
+        for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+          const t = grid[r][c], cell = cells[idx(r, c)];
+          cell.textContent = t == null ? "" : EMO[t];
+          cell.style.background = t == null ? "transparent" : BG[t];
+          cell.style.opacity = "1"; cell.style.transform = "scale(1)";
+          cell.style.outline = (sel && sel.r === r && sel.c === c) ? "3px solid var(--color-accent)" : "none";
+          cell.style.outlineOffset = "-3px";
+        }
+      }
+      function updateHUD() {
+        api.setStatus("Score " + score + " · " + moves + " move" + (moves === 1 ? "" : "s") + " left", "Goal " + GOAL);
+        api.setMeter(score / GOAL * 100);
+      }
+      const adj = (a, b) => Math.abs(a.r - b.r) + Math.abs(a.c - b.c) === 1;
+
+      function onPick(r, c) {
+        if (busy || won || dead || !alive) return;
+        if (sel && adj(sel, { r, c })) { const a = sel; sel = null; attempt(a, { r, c }); }
+        else { sel = { r, c }; render(); }
+      }
+      function onDrag(r, c) {
+        if (busy || won || dead || !alive || !sel) return;
+        if (adj(sel, { r, c })) { const a = sel; sel = null; attempt(a, { r, c }); }
+      }
+      function attempt(a, b) {
+        swapCells(a, b);
+        if (findMatches().size === 0) { swapCells(a, b); render(); return; }
+        moves--; render(); updateHUD();
+        busy = true; resolve(1);
+      }
+      function resolve(chain) {
+        if (!alive) return;
+        const m = findMatches();
+        if (m.size === 0) { busy = false; afterResolve(); return; }
+        score += m.size * 10 * chain; updateHUD();
+        m.forEach((key) => { const p = key.split(","); const cell = cells[idx(+p[0], +p[1])]; cell.style.transform = "scale(0)"; cell.style.opacity = "0"; });
+        setTimeout(() => {
+          if (!alive) return;
+          m.forEach((key) => { const p = key.split(","); grid[+p[0]][+p[1]] = null; });
+          gravity(); refill(); render();
+          setTimeout(() => resolve(chain + 1), 140);
+        }, 150);
+      }
+      function afterResolve() {
+        if (score >= GOAL) { won = true; api.setStatus("Sweet! " + score + " points", "Goal " + GOAL); api.confetti(); setTimeout(() => { if (alive) onWin(); }, 1000); return; }
+        if (moves <= 0) { dead = true; ov.show("Out of moves at <b>" + score + "</b> — you needed " + GOAL + "."); return; }
+        if (!hasMove()) { api.toast("No moves left — shuffling the board"); build(); render(); }
+      }
+      function reset() { score = 0; moves = MOVES; won = false; dead = false; sel = null; ov.hide(); build(); render(); updateHUD(); }
+
+      build(); render(); updateHUD();
+      api.setHint("Tap a treat, then tap a neighbour to swap. Line up 3+ to clear them.");
+      return () => { alive = false; };
+    }
+  };
+
+  /* ─────────────────────────── Crossword (LA / Matcha / Coffee) ─────────────────────────── */
+  const CROSSWORDS = {
+    losangeles: { rows: 9, cols: 13, entries: [
+      { answer: "SMOG", clue: "Basin haze trapped by the inversion layer", row: 1, col: 5, dir: "across" },
+      { answer: "HOLLYWOOD", clue: "Sign-topped district; 'Tinseltown'", row: 0, col: 7, dir: "down" },
+      { answer: "SUNSET", clue: "Strip or boulevard ending at the Pacific", row: 1, col: 5, dir: "down" },
+      { answer: "VENICE", clue: "Abbot Kinney's canal-laced beach town", row: 5, col: 0, dir: "across" },
+      { answer: "LAKERS", clue: "Purple-and-gold hoops five", row: 3, col: 7, dir: "across" },
+      { answer: "DODGERS", clue: "Chavez Ravine's blue nine", row: 7, col: 6, dir: "across" },
+      { answer: "MALIBU", clue: "Surfrider's 21-mile coast, 'the Bu'", row: 2, col: 0, dir: "across" },
+      { answer: "GETTY", clue: "Travertine hilltop museum above the 405", row: 4, col: 1, dir: "down" },
+      { answer: "GRIFFITH", clue: "Observatory and park named for a mining magnate", row: 0, col: 3, dir: "down" },
+      { answer: "RODEO", clue: "Beverly Hills drive said 'ro-DAY-oh'", row: 0, col: 10, dir: "down" }
+    ] },
+    matcha: { rows: 12, cols: 8, entries: [
+      { answer: "UMAMI", clue: "Savory depth strongest in gyokuro", row: 7, col: 3, dir: "across" },
+      { answer: "CHAWAN", clue: "Wide bowl the tea is whisked in", row: 5, col: 5, dir: "down" },
+      { answer: "MATCHA", clue: "Stone-ground, shade-grown powdered green", row: 5, col: 2, dir: "across" },
+      { answer: "CHASHAKU", clue: "Slender bamboo tea scoop", row: 0, col: 3, dir: "down" },
+      { answer: "USUCHA", clue: "Thin, frothy preparation (not koicha)", row: 9, col: 0, dir: "across" },
+      { answer: "KOICHA", clue: "Thick, kneaded ceremonial style", row: 0, col: 7, dir: "down" },
+      { answer: "GYOKURO", clue: "Shaded 'jade dew' luxury leaf", row: 5, col: 0, dir: "down" },
+      { answer: "UJI", clue: "Kyoto region famed for top-grade tea", row: 9, col: 2, dir: "down" },
+      { answer: "CHASEN", clue: "Bamboo whisk of roughly a hundred prongs", row: 3, col: 0, dir: "across" },
+      { answer: "TENCHA", clue: "Unground leaf that is milled into the powder", row: 0, col: 0, dir: "across" }
+    ] },
+    coffee: { rows: 15, cols: 7, entries: [
+      { answer: "CASCARA", clue: "Tea from the coffee cherry's dried husk", row: 6, col: 0, dir: "across" },
+      { answer: "CHEMEX", clue: "Hourglass pour-over in MoMA's collection", row: 6, col: 0, dir: "down" },
+      { answer: "ARABICA", clue: "Delicate species behind most specialty beans", row: 0, col: 1, dir: "down" },
+      { answer: "RISTRETTO", clue: "'Restricted' short pull of espresso", row: 6, col: 5, dir: "down" },
+      { answer: "SIPHON", clue: "Two-chamber vacuum brewer", row: 6, col: 2, dir: "down" },
+      { answer: "TAMP", clue: "Compress the puck before the pull", row: 0, col: 0, dir: "across" },
+      { answer: "LUNGO", clue: "Long pull; opposite of the above", row: 14, col: 1, dir: "across" },
+      { answer: "CREMA", clue: "Reddish-brown foam crowning a shot", row: 2, col: 4, dir: "down" },
+      { answer: "BURR", clue: "Conical or flat grinder type", row: 3, col: 1, dir: "across" },
+      { answer: "ROBUSTA", clue: "Hardier, higher-caffeine counterpart", row: 0, col: 6, dir: "down" }
+    ] }
+  };
+
+  function makeCrossword(themeName, data) {
+    return {
+      how() { return "A tricky " + themeName + " crossword. Tap a cell, type its answer; tap the same cell again to flip across/down. Fill every square correctly to win."; },
+      start(host, api, onWin) {
+        const ROWS = data.rows, COLS = data.cols, entries = data.entries;
+        const kk = (r, c) => r + "," + c;
+
+        // build cell map: key -> { r,c, answer, val, across, down, num }
+        const cellMap = {};
+        entries.forEach((e) => {
+          const dr = e.dir === "down" ? 1 : 0, dc = e.dir === "across" ? 1 : 0;
+          for (let i = 0; i < e.answer.length; i++) {
+            const r = e.row + dr * i, c = e.col + dc * i, k = kk(r, c);
+            if (!cellMap[k]) cellMap[k] = { r, c, answer: e.answer[i], val: "", across: null, down: null, num: 0 };
+            cellMap[k][e.dir] = e;
+          }
+        });
+        // number the starting cells in reading order
+        let num = 0;
+        const starts = {};
+        for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+          const cell = cellMap[kk(r, c)]; if (!cell) continue;
+          const startAcross = cell.across && cell.across.row === r && cell.across.col === c;
+          const startDown = cell.down && cell.down.row === r && cell.down.col === c;
+          if (startAcross || startDown) { num++; cell.num = num; }
+          if (startAcross) starts[cell.across.answer + ":across"] = num;
+          if (startDown) starts[cell.down.answer + ":down"] = num;
+        }
+        const total = Object.keys(cellMap).length;
+
+        let sel = null, dir = "across", done = false;
+
+        /* ── DOM ── */
+        const wrap = el("div", "position:absolute;inset:0;display:flex;flex-direction:column;gap:8px;padding:8px");
+        const cluebar = el("div", "display:flex;align-items:center;gap:8px;flex:none");
+        const prev = el("button", "border:none;background:#dcd3c4;color:#201e1d;width:34px;height:34px;border-radius:999px;font-size:17px;cursor:pointer;flex:none", "‹");
+        const next = el("button", "border:none;background:#dcd3c4;color:#201e1d;width:34px;height:34px;border-radius:999px;font-size:17px;cursor:pointer;flex:none", "›");
+        const clueText = el("div", "flex:1;min-width:0;font-size:13px;line-height:1.3;color:#201e1d;background:#f9f4ed;border-radius:12px;padding:8px 12px");
+        cluebar.appendChild(prev); cluebar.appendChild(clueText); cluebar.appendChild(next);
+
+        const gridScroll = el("div", "flex:1;min-height:0;overflow:auto;display:flex;align-items:flex-start;justify-content:center");
+        const cellPx = Math.max(20, Math.min(34, Math.floor((Math.min(host.clientWidth, 380) - 24) / COLS)));
+        const grid = el("div", "display:grid;grid-template-columns:repeat(" + COLS + "," + cellPx + "px);gap:2px;touch-action:manipulation");
+        for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
+          const cell = cellMap[kk(r, c)];
+          if (!cell) { grid.appendChild(el("div", "width:" + cellPx + "px;height:" + cellPx + "px")); continue; }
+          const box = el("div", "position:relative;width:" + cellPx + "px;height:" + cellPx + "px;background:#fff;border-radius:4px;display:grid;place-items:center;cursor:pointer;font-weight:700;font-size:" + Math.floor(cellPx * 0.5) + "px;color:#201e1d;text-transform:uppercase");
+          if (cell.num) { box.appendChild(el("span", "position:absolute;top:1px;left:2px;font-size:" + Math.max(7, Math.floor(cellPx * 0.28)) + "px;font-weight:600;color:#82796a;line-height:1", String(cell.num))); }
+          const letter = el("span", "line-height:1"); box.appendChild(letter);
+          cell._el = box; cell._letter = letter;
+          box.addEventListener("pointerdown", (e) => { e.preventDefault(); onCellTap(cell); });
+          grid.appendChild(box);
+        }
+        gridScroll.appendChild(grid);
+
+        // on-screen keyboard
+        const kb = el("div", "flex:none;display:flex;flex-direction:column;gap:5px");
+        const keyEls = {};
+        function mkKey(label, code, wide) {
+          const b = el("button", "flex:" + (wide ? "1.6" : "1") + ";min-width:0;height:40px;border:none;border-radius:9px;background:#dcd3c4;color:#201e1d;font-family:Figtree,system-ui,sans-serif;font-weight:700;font-size:" + (wide ? "11px" : "15px") + ";text-transform:uppercase;cursor:pointer;display:grid;place-items:center", label);
+          b.addEventListener("pointerdown", (e) => { e.preventDefault(); handleKey(code); });
+          return b;
+        }
+        ["QWERTYUIOP", "ASDFGHJKL", "ZXCVBNM"].forEach((row, ri) => {
+          const krow = el("div", "display:flex;justify-content:center;gap:4px");
+          if (ri === 2) krow.appendChild(mkKey("Del", "BACK", true));
+          for (const ch of row) { const e = mkKey(ch, ch, false); keyEls[ch] = e; krow.appendChild(e); }
+          if (ri === 2) krow.appendChild(mkKey("Flip", "FLIP", true));
+          kb.appendChild(krow);
+        });
+
+        wrap.appendChild(cluebar); wrap.appendChild(gridScroll); wrap.appendChild(kb);
+        host.appendChild(wrap);
+
+        /* ── logic ── */
+        function entryAt(cell, d) { return d === "across" ? cell.across : cell.down; }
+        function activeEntry() { if (!sel) return null; return entryAt(sel, dir) || entryAt(sel, dir === "across" ? "down" : "across"); }
+        function cellsOf(entry) {
+          const arr = []; if (!entry) return arr;
+          const dr = entry.dir === "down" ? 1 : 0, dc = entry.dir === "across" ? 1 : 0;
+          for (let i = 0; i < entry.answer.length; i++) arr.push(cellMap[kk(entry.row + dr * i, entry.col + dc * i)]);
+          return arr;
+        }
+        function paint() {
+          const entry = activeEntry();
+          const activeCells = new Set(cellsOf(entry).map((c) => kk(c.r, c.c)));
+          for (const k in cellMap) {
+            const cell = cellMap[k];
+            cell._letter.textContent = cell.val;
+            const isSel = sel && sel.r === cell.r && sel.c === cell.c;
+            cell._el.style.background = isSel ? "#f6a06b" : activeCells.has(k) ? "#ffe1d0" : "#fff";
+          }
+          if (entry) { const n = starts[entry.answer + ":" + entry.dir]; clueText.textContent = n + " " + entry.dir + " — " + entry.clue; }
+          else clueText.textContent = "Tap a square to begin.";
+          const filled = Object.values(cellMap).filter((c) => c.val).length;
+          api.setStatus(filled + " / " + total + " filled", themeName);
+          api.setMeter(filled / total * 100);
+        }
+        function onCellTap(cell) {
+          if (done) return;
+          if (sel && sel.r === cell.r && sel.c === cell.c) {
+            const other = dir === "across" ? "down" : "across";
+            if (entryAt(cell, other)) dir = other;
+          } else {
+            sel = cell;
+            if (!entryAt(cell, dir)) dir = dir === "across" ? "down" : "across";
+          }
+          paint();
+        }
+        function advance(step) {
+          const entry = activeEntry(); if (!entry || !sel) return;
+          const cells = cellsOf(entry);
+          let i = cells.findIndex((c) => c.r === sel.r && c.c === sel.c);
+          i += step;
+          if (i >= 0 && i < cells.length) sel = cells[i];
+        }
+        function handleKey(code) {
+          if (done) return;
+          if (code === "FLIP") { const other = dir === "across" ? "down" : "across"; if (sel && entryAt(sel, other)) { dir = other; paint(); } return; }
+          if (!sel) return;
+          if (code === "BACK") {
+            if (sel.val) sel.val = "";
+            else { advance(-1); if (sel) sel.val = ""; }
+            paint(); return;
+          }
+          if (/^[A-Z]$/.test(code)) { sel.val = code; advance(1); paint(); checkDone(); }
+        }
+        function checkDone() {
+          const all = Object.values(cellMap).every((c) => c.val === c.answer);
+          if (all) { done = true; api.confetti(); api.setStatus("Solved!", themeName); setTimeout(onWin, 900); }
+        }
+        function cycleClue(delta) {
+          const cur = activeEntry();
+          let i = cur ? entries.indexOf(cur) : -1;
+          i = (i + delta + entries.length) % entries.length;
+          const e = entries[i]; dir = e.dir; sel = cellMap[kk(e.row, e.col)]; paint();
+        }
+        prev.addEventListener("pointerdown", (e) => { e.preventDefault(); cycleClue(-1); });
+        next.addEventListener("pointerdown", (e) => { e.preventDefault(); cycleClue(1); });
+
+        const keyfn = (e) => {
+          if (e.key === "Backspace") { e.preventDefault(); handleKey("BACK"); }
+          else if (e.key === " ") { e.preventDefault(); handleKey("FLIP"); }
+          else { const k = (e.key || "").toUpperCase(); if (/^[A-Z]$/.test(k)) handleKey(k); }
+        };
+        window.addEventListener("keydown", keyfn);
+
+        cycleClue(0);
+        api.setHint("Clues cross each other — a wrong letter will trip up its neighbour.");
+        return () => window.removeEventListener("keydown", keyfn);
+      }
+    };
+  }
+
+  const crossLA = makeCrossword("Los Angeles", CROSSWORDS.losangeles);
+  const crossMatcha = makeCrossword("matcha", CROSSWORDS.matcha);
+  const crossCoffee = makeCrossword("coffee", CROSSWORDS.coffee);
+
+  window.BirthdayGames = { wordle, runner, candy, crossLA, crossMatcha, crossCoffee };
 })();
 </script>
 
@@ -736,16 +1048,28 @@ const STOPS = [
   { time: "4:30 PM", min: 990, place: "Roof Top Pool" },
   { time: "9:00 PM", min: 1260, place: "RedWhite Boneless Ramen" }
 ];
-const GAME_KEYS = ["runner", "wordle"];
-const GAME_NAMES = { runner: "Crowd Rush", wordle: "Word Master" };
+const GAME_NAMES = {
+  runner: "Crowd Rush", wordle: "Word Master", candy: "Cookie Crush",
+  crossLA: "LA Crossword", crossCoffee: "Coffee Crossword", crossMatcha: "Matcha Crossword"
+};
 const STORE_KEY = "keaBirthdayProgress";
 const LONGPRESS_MS = 3000;
 
-/* behaviour props (mirrors the DC component defaults) */
+/* behaviour */
 const UNLOCK_MINUTES = 45;
-const REQUIRE_BOTH = true;
-const SHOW_TESTER = true;
-const GAME_COUNT = REQUIRE_BOTH ? 2 : 1;
+
+/* Per-stop themed crossword (added on top of the base games). */
+const CROSSWORD_AT = { 0: "crossLA", 3: "crossCoffee", 7: "crossMatcha" };
+
+/* Odd-numbered stops (1st, 3rd, 5th, 7th, 9th) get Crowd Rush + Word Master;
+   even-numbered stops get Word Master + Cookie Crush. A few stops also carry
+   a themed crossword on top. */
+function gamesFor(i) {
+  const odd = (i + 1) % 2 === 1;
+  const g = odd ? ["runner", "wordle"] : ["wordle", "candy"];
+  if (CROSSWORD_AT[i]) g.push(CROSSWORD_AT[i]);
+  return g;
+}
 
 /* ── SVG snippets (from the imported design) ── */
 const SVG = {
@@ -772,14 +1096,12 @@ function loadState() {
   try { raw = localStorage.getItem(STORE_KEY); } catch (e) { raw = memoryFallback; }
   let st = null;
   try { st = JSON.parse(raw); } catch (e) { st = null; }
-  const n = GAME_COUNT;
-  const fresh = () => ({ day: todayKey(), progress: STOPS.map(() => Array(n).fill(false)) });
-  if (!st || st.day !== todayKey() || !Array.isArray(st.progress) || st.progress.length !== STOPS.length) st = fresh();
-  st.progress = st.progress.map((row) => {
-    const out = Array(n).fill(false);
-    if (Array.isArray(row)) for (let i = 0; i < n; i++) out[i] = !!row[i];
-    return out;
-  });
+  const fresh = () => ({ day: todayKey(), progress: STOPS.map((_, i) => Array(gamesFor(i).length).fill(false)) });
+  const shapeOk = st && st.day === todayKey() && Array.isArray(st.progress)
+    && st.progress.length === STOPS.length
+    && st.progress.every((row, i) => Array.isArray(row) && row.length === gamesFor(i).length);
+  if (!shapeOk) return fresh();
+  st.progress = st.progress.map((row) => row.map((v) => !!v));
   return st;
 }
 function persist(st) {
@@ -788,7 +1110,6 @@ function persist(st) {
 }
 
 let state = loadState();
-let testAll = false;
 let modal = null;      // { stop, game }
 let cleanup = null;    // active game teardown
 
@@ -801,7 +1122,6 @@ function unlockAt(stop) {
 }
 function stopState(i) {
   if (state.progress[i].every(Boolean)) return "solved";
-  if (testAll) return "playable";
   return Date.now() >= unlockAt(STOPS[i]) ? "playable" : "locked";
 }
 function doneCount() { return state.progress.filter((r) => r.every(Boolean)).length; }
@@ -822,7 +1142,6 @@ const hintEl = document.getElementById("hint");
 const gameTitle = document.getElementById("gameTitle");
 const gameHow = document.getElementById("gameHow");
 const toastEl = document.getElementById("toast");
-const testBtn = document.getElementById("testBtn");
 const rows = []; // { root, lastState }
 
 /* ── HUD api given to games ── */
@@ -847,7 +1166,8 @@ function rowHTML(i, st) {
   const stop = STOPS[i];
   const row = state.progress[i];
   const cleared = row.filter(Boolean).length;
-  const n = GAME_COUNT;
+  const games = gamesFor(i);
+  const n = games.length;
   const isLast = i === STOPS.length - 1;
   const connector = isLast ? '' : '<span style="flex:1;width:0;border-left:2px dashed var(--color-neutral-300);margin-top:6px;min-height:26px"></span>';
 
@@ -864,12 +1184,13 @@ function rowHTML(i, st) {
       '</div>';
   } else if (st === "playable") {
     const headline = cleared === 0 ? "Ready when you are" : cleared + " of " + n + " games cleared";
-    const subline = n === 1
-      ? "Win the game and the stop appears."
-      : (cleared === 0 ? "Two games stand between you and this one." : "One more game and it's yours.");
+    const left = n - cleared;
+    const subline = cleared === 0
+      ? n + " games stand between you and this one."
+      : (left === 1 ? "One more game and it's yours." : left + " games left on this stop.");
     let gamesHTML = "";
     for (let gi = 0; gi < n; gi++) {
-      const key = GAME_KEYS[gi];
+      const key = games[gi];
       if (row[gi]) {
         gamesHTML +=
           '<div class="tag tag-accent-2" style="gap:8px;padding:9px 14px;border-radius:999px;font-size:13px;font-weight:600">' +
@@ -963,7 +1284,7 @@ function updateProgress() {
 /* ── game modal ── */
 function openGame(i, gi) {
   modal = { stop: i, game: gi };
-  const key = GAME_KEYS[gi];
+  const key = gamesFor(i)[gi];
   const builder = window.BirthdayGames && window.BirthdayGames[key];
   gameTitle.textContent = GAME_NAMES[key];
   gameHow.textContent = builder ? builder.how() : "";
@@ -986,7 +1307,7 @@ function markDone(i, gi) {
   state.progress[i][gi] = true;
   persist(state);
   if (state.progress[i].every(Boolean)) { confettiBurst(); showToast("Unlocked — here's where we're going"); }
-  else showToast("One down. One game left on this stop.");
+  else { const left = state.progress[i].filter((v) => !v).length; showToast(left === 1 ? "One game left on this stop." : left + " games left on this stop."); }
   renderRow(i, true);
   updateProgress();
   if (stopState(i) === "solved") rows[i].root.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -1057,18 +1378,6 @@ function confLoop() {
   }
   if (bits.length) confRAF = requestAnimationFrame(confLoop);
   else { confRAF = 0; ctx.clearRect(0, 0, innerWidth, innerHeight); }
-}
-
-/* ── tester toggle ── */
-if (SHOW_TESTER) {
-  testBtn.addEventListener("click", () => {
-    testAll = !testAll;
-    testBtn.textContent = testAll ? "Back to real times" : "Testing: open every game now";
-    for (let i = 0; i < STOPS.length; i++) renderRow(i, true);
-    showToast(testAll ? "Every game open for testing" : "Back to real times");
-  });
-} else {
-  testBtn.style.display = "none";
 }
 
 /* ── tick: countdowns + midnight reset ── */
